@@ -1,15 +1,26 @@
 const REPO = 'a5782181/wangzhan'
 const FILE_PATH = 'data/site.json'
 
+const COUNTRY_NAMES = {
+  CN:'中国', US:'United States', GB:'United Kingdom', JP:'日本', KR:'한국',
+  TW:'Taiwan', HK:'Hong Kong', DE:'Germany', FR:'France', CA:'Canada',
+  AU:'Australia', SG:'Singapore', MY:'Malaysia', TH:'Thailand', VN:'Vietnam',
+  IN:'India', PH:'Philippines', ID:'Indonesia', MO:'Macau', RU:'Russia',
+  BR:'Brazil', MX:'Mexico', IT:'Italy', ES:'Spain', NL:'Netherlands',
+  CH:'Switzerland', SE:'Sweden', NO:'Norway', DK:'Denmark', FI:'Finland',
+  NZ:'New Zealand', ZA:'South Africa', AR:'Argentina', IL:'Israel',
+  PT:'Portugal', BE:'Belgium', AT:'Austria', IE:'Ireland', PL:'Poland',
+  CZ:'Czech', GR:'Greece', HU:'Hungary', RO:'Romania', UA:'Ukraine',
+  TR:'Turkey', SA:'Saudi Arabia', AE:'UAE', EG:'Egypt', NG:'Nigeria',
+  KE:'Kenya', PK:'Pakistan', BD:'Bangladesh', LK:'Sri Lanka', MM:'Myanmar'
+}
+
 async function getFileSha(token) {
   try {
     const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
       headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
     })
-    if (res.ok) {
-      const data = await res.json()
-      return data.sha
-    }
+    if (res.ok) return (await res.json()).sha
   } catch (e) {}
   return null
 }
@@ -45,18 +56,26 @@ export default async function handler(req, res) {
   const token = process.env.GITHUB_TOKEN
   if (!token) return res.status(200).json({ success: true, message: '未配置Token，仅记录日志' })
 
-  const data = req.body || {}
+  const body = req.body || {}
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0] || req.socket.remoteAddress || 'unknown'
+
+  const vercelCountry = req.headers['x-vercel-ip-country'] || ''
+  const vercelCity = req.headers['x-vercel-ip-city'] || ''
+  const vercelRegion = req.headers['x-vercel-ip-country-region'] || ''
+
+  const country = body.country || COUNTRY_NAMES[vercelCountry] || vercelCountry || '未知'
+  const city = (vercelCity && vercelCity !== 'Unknown' ? vercelCity : body.city) || ''
 
   const click = {
     time: new Date().toISOString(),
-    plan: data.plan || 'unknown',
-    price: data.price || 'unknown',
-    recipe: data.recipeName || data.recipe || 'unknown',
-    visitor: data.visitor || 'v_' + Date.now(),
+    plan: body.plan || 'unknown',
+    price: body.price || 'unknown',
+    recipe: body.recipeName || body.recipe || 'unknown',
+    visitor: body.visitor || 'v_' + Date.now(),
     ip: ip,
-    country: data.country || '未知',
-    city: data.city || ''
+    country: country,
+    city: city,
+    countryCode: vercelCountry || ''
   }
 
   try {

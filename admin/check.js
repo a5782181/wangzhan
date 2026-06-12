@@ -1,323 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>数据面板 v2 - 乡村味道</title>
-<style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #1a1a1a; font-size: 14px; }
-a { color: inherit; text-decoration: none; }
-.header { background: #000; height: 56px; position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
-.header-inner { max-width: 1400px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; }
-.header-logo { color: #fff; font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.header-right { display: flex; gap: 12px; align-items: center; }
-.header-link { color: rgba(255,255,255,.6); font-size: 13px; transition: .2s; }
-.header-link:hover { color: #fff; }
-.btn { padding: 6px 16px; border-radius: 6px; font-size: 13px; border: none; cursor: pointer; transition: .2s; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
-.btn-primary { background: #1890ff; color: #fff; }
-.btn-primary:hover { background: #0c7bdc; }
-.btn-danger { background: #f5222d; color: #fff; }
-.btn-danger:hover { background: #cf1322; }
-.btn-gray { background: #999; color: #fff; }
-.btn-gray:hover { background: #777; }
-.btn-sm { padding: 4px 10px; font-size: 12px; }
-.main { margin-top: 56px; padding: 24px 32px; max-width: 1400px; margin-left: auto; margin-right: auto; }
-.page-title { font-size: 22px; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
-.page-title .time { font-size: 13px; color: #888; font-weight: 400; }
-.tab-bar { display: flex; gap: 0; border-bottom: 1px solid #e8e8e8; margin-bottom: 20px; overflow-x: auto; }
-.tab-bar button { padding: 10px 18px; font-size: 14px; color: #666; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: .2s; white-space: nowrap; }
-.tab-bar button:hover { color: #333; }
-.tab-bar button.active { color: #1890ff; border-bottom-color: #1890ff; font-weight: 600; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: #fff; border-radius: 10px; padding: 20px; }
-.stat-card .icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; }
-.stat-card .label { font-size: 13px; color: #888; margin-bottom: 4px; }
-.stat-card .value { font-size: 28px; font-weight: 700; }
-.stat-card .sub { font-size: 12px; color: #999; margin-top: 6px; }
-.stat-card:nth-child(1) .icon { background: #e6f7ff; }
-.stat-card:nth-child(2) .icon { background: #f6ffed; }
-.stat-card:nth-child(3) .icon { background: #fff7e6; }
-.stat-card:nth-child(4) .icon { background: #fff1f0; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-.card { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 16px; }
-.card-title { font-size: 15px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
-.card-title .badge { font-size: 11px; background: #f0f0f0; padding: 2px 8px; border-radius: 4px; color: #666; }
-.bar-list { display: flex; flex-direction: column; gap: 12px; }
-.bar-item { display: flex; align-items: center; gap: 12px; }
-.bar-item .name { width: 80px; font-size: 13px; color: #555; text-align: right; flex-shrink: 0; }
-.bar-item .bar { flex: 1; height: 28px; background: #f5f5f5; border-radius: 6px; overflow: hidden; }
-.bar-item .bar-fill { height: 100%; border-radius: 6px; transition: width .6s ease; display: flex; align-items: center; padding-left: 10px; font-size: 12px; color: #fff; font-weight: 600; min-width: 40px; }
-.bar-item .count { width: 50px; font-size: 13px; font-weight: 600; text-align: right; flex-shrink: 0; }
-.rank-list { display: flex; flex-direction: column; gap: 10px; }
-.rank-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
-.rank-item:last-child { border-bottom: none; }
-.rank-num { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-.rank-num.top { background: #f5222d; color: #fff; }
-.rank-num.normal { background: #f0f0f0; color: #666; }
-.rank-name { flex: 1; font-size: 13px; font-weight: 500; }
-.rank-count { font-size: 13px; color: #888; }
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-th { text-align: left; padding: 10px 12px; font-size: 12px; color: #888; font-weight: 600; border-bottom: 1px solid #f0f0f0; background: #fafafa; }
-td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid #f5f5f5; vertical-align: middle; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: #fafafa; }
-.badge-plan { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; }
-.badge-plan.pdf { background: #e6f7ff; color: #1890ff; }
-.badge-plan.video { background: #f6ffed; color: #52c41a; }
-.badge-plan.support { background: #fff7e6; color: #fa8c16; }
-.badge-plan.vip { background: #fff1f0; color: #f5222d; }
-.form-group { margin-bottom: 14px; }
-.form-group label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; }
-.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; font-family: inherit; }
-.form-group textarea { resize: vertical; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.img-preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-top: 8px; display: none; }
-.img-input-group { display: flex; gap: 8px; }
-.img-input-group input { flex: 1; }
-.price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.price-item { background: #fafafa; border-radius: 8px; padding: 16px; position: relative; }
-.price-item .plan-name { font-size: 14px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
-.price-item input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; font-weight: 600; }
-.toggle { position: relative; width: 44px; height: 24px; cursor: pointer; }
-.toggle input { opacity: 0; width: 0; height: 0; }
-.toggle .slider { position: absolute; inset: 0; background: #ccc; border-radius: 24px; transition: .3s; }
-.toggle .slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .3s; }
-.toggle input:checked + .slider { background: #1890ff; }
-.toggle input:checked + .slider::before { transform: translateX(20px); }
-.hero-slides { display: flex; flex-direction: column; gap: 12px; }
-.hero-slide-item { background: #fafafa; border-radius: 8px; padding: 16px; display: flex; gap: 16px; align-items: flex-start; }
-.hero-slide-item .preview { width: 200px; height: 100px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: #eee; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px; }
-.hero-slide-item .fields { flex: 1; }
-.hero-slide-item .fields input, .hero-slide-item .fields textarea { width: 100%; padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; margin-bottom: 6px; }
-.hero-slide-item .actions { display: flex; gap: 6px; margin-top: 6px; }
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 200; justify-content: center; align-items: flex-start; padding-top: 40px; overflow-y: auto; }
-.modal-overlay.on { display: flex; }
-.modal-box { background: #fff; border-radius: 12px; padding: 24px; max-width: 700px; width: 95%; margin-bottom: 40px; box-shadow: 0 8px 32px rgba(0,0,0,.15); }
-.empty { text-align: center; padding: 40px; color: #999; }
-.footer { text-align: center; padding: 20px; color: #999; font-size: 12px; margin-top: 20px; }
-.login-overlay { display: none; position: fixed; inset: 0; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); z-index: 9999; justify-content: center; align-items: center; }
-.login-overlay.on { display: flex; }
-.login-box { background: #fff; border-radius: 16px; padding: 40px 32px; width: 380px; max-width: 90%; box-shadow: 0 16px 48px rgba(0,0,0,.3); text-align: center; }
-.login-box .logo { font-size: 48px; margin-bottom: 12px; }
-.login-box h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; }
-.login-box .subtitle { font-size: 13px; color: #999; margin-bottom: 28px; }
-.login-box .form-group { margin-bottom: 16px; text-align: left; }
-.login-box .form-group label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; font-weight: 500; }
-.login-box .form-group input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; transition: .2s; }
-.login-box .form-group input:focus { border-color: #1890ff; outline: none; box-shadow: 0 0 0 3px rgba(24,144,255,.1); }
-.login-box .btn-login { width: 100%; padding: 12px; border: none; border-radius: 8px; background: #1890ff; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: .2s; }
-.login-box .btn-login:hover { background: #0c7bdc; }
-.login-box .btn-login:disabled { background: #ccc; cursor: not-allowed; }
-.login-box .error-msg { color: #f5222d; font-size: 12px; margin-top: 8px; display: none; }
-.login-box .remember-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.login-box .remember-row label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #666; cursor: pointer; }
-.login-box .remember-row input[type=checkbox] { accent-color: #1890ff; }
-@media (max-width: 900px) { .stats { grid-template-columns: repeat(2, 1fr); } .grid-2 { grid-template-columns: 1fr; } .main { padding: 16px; } .price-grid { grid-template-columns: 1fr; } .hero-slide-item { flex-direction: column; } .hero-slide-item .preview { width: 100%; height: 150px; } }
-@media (max-width: 600px) { .stats { grid-template-columns: 1fr; } .stat-card .value { font-size: 22px; } .form-row { grid-template-columns: 1fr; } }
-</style>
-</head>
-<body>
-<div class="login-overlay on" id="loginOverlay">
-  <div class="login-box">
-    <div class="logo">🥢</div>
-    <h2>管理员登录</h2>
-    <div class="subtitle">乡村味道 · 管理后台</div>
-    <div class="form-group">
-      <label>账号</label>
-      <input type="text" id="loginUser" placeholder="请输入账号" autocomplete="username">
-    </div>
-    <div class="form-group">
-      <label>密码</label>
-      <input type="password" id="loginPass" placeholder="请输入密码" autocomplete="current-password">
-    </div>
-    <div class="remember-row">
-      <label><input type="checkbox" id="loginRemember" checked> 记住账号密码（30天）</label>
-    </div>
-    <button class="btn-login" id="loginBtn" onclick="doLogin()">登 录</button>
-    <div class="error-msg" id="loginError">账号或密码错误</div>
-  </div>
-</div>
-<header class="header">
-  <div class="header-inner">
-    <a href="../index.html" class="header-logo"><span>🥢</span>乡村味道</a>
-    <div class="header-right">
-      <a href="../index.html" target="_blank" class="header-link">访问前台 ↗</a>
-      <button class="btn btn-primary" onclick="loadStats()">刷新数据</button>
-      <button class="btn btn-danger" onclick="clearData()">清空数据</button>
-      <button class="btn btn-gray" onclick="doLogout()">退出登录</button>
-    </div>
-  </div>
-</header>
-<div class="main">
-  <div class="page-title">
-    <span>数据面板</span>
-    <span class="time" id="updateTime">加载中...</span>
-  </div>
-  <div class="tab-bar">
-    <button class="active" onclick="switchTab('stats',this)">数据统计</button>
-    <button onclick="switchTab('articles',this)">文章管理</button>
-    <button onclick="switchTab('prices',this)">套餐管理</button>
-    <button onclick="switchTab('hero',this)">头图管理</button>
-    <button onclick="switchTab('translate',this)">翻译设置</button>
-    <button onclick="switchTab('cloud',this)">云端同步</button>
-  </div>
-
-
-  <div id="tab-stats">
-    <div class="stats">
-      <div class="stat-card"><div class="icon">📊</div><div class="label">总点击次数</div><div class="value" id="totalClicks">-</div><div class="sub">所有付费按钮的点击总量</div></div>
-      <div class="stat-card"><div class="icon">🔥</div><div class="label">今日点击</div><div class="value" id="todayClicks">-</div><div class="sub">今天的点击数</div></div>
-      <div class="stat-card"><div class="icon">👥</div><div class="label">独立访客</div><div class="value" id="uniqueVisitors">-</div><div class="sub">不同用户的数量</div></div>
-      <div class="stat-card"><div class="icon">📈</div><div class="label">付费意愿率</div><div class="value" id="convRate">-</div><div class="sub">点击付费按钮的访客占比</div></div>
-    </div>
-    <div class="grid-2">
-      <div class="card"><div class="card-title">付费方案点击分布 <span class="badge">按点击量</span></div><div class="bar-list" id="planBars"></div></div>
-      <div class="card"><div class="card-title">热门菜谱 Top 10</div><div class="rank-list" id="recipeRank"></div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">IP地区分布 <span class="badge" id="ipCount">-</span></div>
-      <div class="bar-list" id="ipBars"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">详细点击记录 <span class="badge" id="clickCount">-</span></div>
-      <div class="table-wrap"><table><thead><tr><th>时间</th><th>方案</th><th>菜谱</th><th>价格</th><th>IP</th><th>国家</th><th>城市</th></tr></thead><tbody id="clickTable"></tbody></table></div>
-    </div>
-  </div>
-
-  <div id="tab-articles" style="display:none">
-    <div class="card">
-      <div class="card-title">菜谱列表 <button class="btn btn-primary" onclick="showEditor()">+ 新建菜谱</button></div>
-      <div class="table-wrap"><table><thead><tr><th>图片</th><th>菜名</th><th>地区</th><th>难度</th><th>收费</th><th>操作</th></tr></thead><tbody id="articleTable"></tbody></table></div>
-    </div>
-    <div class="modal-overlay" id="editorModal">
-      <div class="modal-box">
-        <div class="card-title" id="editorTitle">新建菜谱 <button class="btn btn-gray btn-sm" onclick="hideEditor()" style="margin-left:auto">✕</button></div>
-      <div class="form-group">
-        <label>封面图片（推荐尺寸 400×300，比例 4:3）</label>
-        <div class="img-input-group">
-          <input type="file" id="ed-imgFile" accept="image/*" onchange="handleFileUpload(this)">
-          <input type="text" id="ed-imgUrl" placeholder="或输入图片URL" onchange="handleUrlInput(this)">
-        </div>
-        <img id="ed-imgPreview" class="img-preview">
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>菜名 *</label><input id="ed-name" placeholder="如：红烧肉"></div>
-        <div class="form-group"><label>地区 *</label><input id="ed-region" placeholder="如：东北"></div>
-        <div class="form-group"><label>难度</label><select id="ed-diff"><option value="低">简单</option><option value="中">中等</option><option value="高">功夫菜</option></select></div>
-        <div class="form-group"><label>时间</label><input id="ed-time" placeholder="如：40分钟"></div>
-      </div>
-      <div class="form-group"><label>简介</label><textarea id="ed-desc" rows="2" placeholder="菜品简介"></textarea></div>
-      <div class="form-group"><label>食材（每行一个）</label><textarea id="ed-ingred" rows="4" placeholder="猪里脊肉 300g&#10;土豆淀粉 150g"></textarea></div>
-      <div class="form-group"><label>步骤（每行一个）</label><textarea id="ed-steps" rows="6" placeholder="步骤1&#10;步骤2"></textarea></div>
-      <div class="form-group" style="display:flex;align-items:center;gap:12px">
-        <label style="margin:0;font-size:14px;color:#333">是否收费：</label>
-        <label class="toggle"><input type="checkbox" id="ed-paid"><span class="slider"></span></label>
-        <span style="font-size:12px;color:#888">开启后前端只显示简介，内容需付费查看</span>
-      </div>
-      <div style="display:flex;gap:10px"><button class="btn btn-primary" onclick="saveArticle()">保存</button><button class="btn btn-gray" onclick="hideEditor()">取消</button></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="tab-prices" style="display:none">
-    <div class="card">
-      <div class="card-title">套餐管理</div>
-      <p style="font-size:13px;color:#888;margin-bottom:16px">修改标题、价格或关闭开关后，点击保存将自动翻译成5种语言。</p>
-      <div class="price-grid" id="priceGrid"></div>
-      <div style="margin-top:16px"><button class="btn btn-primary" id="savePricesBtn" onclick="savePrices()">保存并翻译</button></div>
-    </div>
-  </div>
-
-  <div id="tab-hero" style="display:none">
-    <div class="card">
-      <div class="card-title">首页头图管理 <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="addHeroSlide()">+ 添加头图</button><button class="btn btn-primary" id="translateHeroBtn" onclick="translateAllHeroSlides()">翻译全部头图</button></div></div>
-      <p style="font-size:13px;color:#888;margin-bottom:16px">推荐尺寸 1200×400，比例 3:1。支持本地上传或URL链接（二选一）。添加后点击"翻译全部头图"可自动翻译标题、描述、标签为5种语言。</p>
-      <div class="hero-slides" id="heroSlides"></div>
-    </div>
-  </div>
-
-  <div id="tab-translate" style="display:none">
-    <div class="card">
-      <div class="card-title">翻译 API 设置</div>
-      <p style="font-size:13px;color:#888;margin-bottom:16px">配置自定义翻译 API Key 以获得更好的翻译质量。留空则使用默认免费翻译（MyMemory）。</p>
-      
-      <div class="form-group">
-        <label>腾讯云 SecretId</label>
-        <input type="text" id="tencentSecretId" placeholder="留空使用免费翻译">
-      </div>
-      <div class="form-group">
-        <label>腾讯云 SecretKey</label>
-        <input type="password" id="tencentSecretKey" placeholder="留空使用免费翻译">
-      </div>
-      
-      <div style="display:flex;gap:10px;margin-top:16px">
-        <button class="btn btn-primary" onclick="saveTransKeys()">保存配置</button>
-        <button class="btn btn-danger" onclick="clearTransKeys()">清除配置</button>
-      </div>
-      
-      <div id="transStatus" style="margin-top:12px;font-size:13px;display:none"></div>
-      
-      <div style="margin-top:20px;padding:16px;background:#f6ffed;border-radius:8px;border:1px solid #b7eb8f">
-        <div style="font-size:14px;font-weight:600;color:#52c41a;margin-bottom:8px">当前状态</div>
-        <div id="transCurrentStatus" style="font-size:13px;color:#666"></div>
-      </div>
-      
-      <div style="margin-top:16px;padding:16px;background:#f0f5ff;border-radius:8px;border:1px solid #91d5ff">
-        <div style="font-size:14px;font-weight:600;color:#1890ff;margin-bottom:8px">说明</div>
-        <ul style="font-size:12px;color:#666;line-height:1.8;margin:0;padding-left:16px">
-          <li>配置腾讯云 API Key 后，菜谱和套餐名称将自动翻译为 5 种语言</li>
-          <li>免费翻译（MyMemory）有每日调用限制，适合小规模使用</li>
-          <li>腾讯云翻译需要实名认证，每月有免费额度</li>
-          <li>清除配置后将恢复使用免费翻译</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div id="tab-cloud" style="display:none">
-    <div class="card">
-      <div class="card-title">数据同步</div>
-      <p style="font-size:13px;color:#888;margin-bottom:16px">所有数据通过 Vercel 服务器自动同步到 GitHub，无需配置 Token。修改后自动提交到 GitHub，所有人访问都能看到最新数据。</p>
-      
-      <div style="margin-top:20px;padding:16px;background:#f6ffed;border-radius:8px;border:1px solid #b7eb8f">
-        <div style="font-size:14px;font-weight:600;color:#52c41a;margin-bottom:8px">同步状态</div>
-        <div id="githubCurrentStatus" style="font-size:13px;color:#666">已通过 Vercel 配置 GitHub 同步</div>
-      </div>
-      
-      <div style="margin-top:16px;padding:16px;background:#f0f5ff;border-radius:8px;border:1px solid #91d5ff">
-        <div style="font-size:14px;font-weight:600;color:#1890ff;margin-bottom:8px">手动同步</div>
-        <div style="display:flex;gap:10px;margin-top:8px">
-          <button class="btn btn-primary" onclick="pushToGithub()">立即推送到 GitHub</button>
-        </div>
-        <p style="font-size:12px;color:#888;margin-top:8px">保存套餐/文章/头图时会自动推送，也可手动点击立即推送</p>
-      </div>
-      
-      <div id="githubStatus" style="margin-top:12px;font-size:13px;display:none"></div>
-      
-      <div style="margin-top:16px;padding:16px;background:#fff1f0;border-radius:8px;border:1px solid #ffa39e">
-        <div style="font-size:14px;font-weight:600;color:#f5222d;margin-bottom:8px">说明</div>
-        <ul style="font-size:12px;color:#666;line-height:1.8;margin:0;padding-left:16px">
-          <li>Token 存在 Vercel 环境变量中，浏览器不存储 Token</li>
-          <li>换电脑/清浏览器数据，只要密码就能登录，无需重新配置</li>
-          <li>所有数据自动同步，无需手动配置</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="footer">© 2026 中国乡村味道 · 管理后台</div>
-
-<script>
-function showLogin(){document.getElementById('loginOverlay').classList.add('on')}
-function showAdmin(){document.getElementById('loginOverlay').classList.remove('on')}
-function doLogout(){localStorage.removeItem('adminSession');location.reload()}
-</script>
-<script>
+﻿
 const barColors = ['#1890ff', '#52c41a', '#fa8c16', '#f5222d']
 const defaultPlans = [
   { key: '完整菜谱PDF', name: '📖 完整菜谱PDF', price: '19.99', enabled: true },
@@ -376,26 +57,11 @@ async function translateArticle(article){
 function getClicks() { return JSON.parse(localStorage.getItem('clicks') || '[]') }
 function getVisits() { return JSON.parse(localStorage.getItem('visits') || '[]') }
 function getArticles() { return JSON.parse(localStorage.getItem('articles') || '[]') }
-var _pushTimer = null
-function debouncedPush() {
-  if (_pushTimer) clearTimeout(_pushTimer)
-  _pushTimer = setTimeout(function() { pushToGithub() }, 3000)
-}
-function saveArticles(d) { localStorage.setItem('articles', JSON.stringify(d)); debouncedPush() }
+function saveArticles(d) { localStorage.setItem('articles', JSON.stringify(d)); pushToGithub() }
 function getPlans() { return JSON.parse(localStorage.getItem('plans') || JSON.stringify(defaultPlans)) }
-function savePlans(d) { localStorage.setItem('plans', JSON.stringify(d)); debouncedPush() }
-function getHeroSlides() {
-  const slides = JSON.parse(localStorage.getItem('heroSlides') || '[]')
-  return slides.map(function(s) {
-    if (!s.title_en && !s.title_ja) {
-      s.title_en = s.title_en || ''; s.title_ja = s.title_ja || ''; s.title_ko = s.title_ko || ''; s.title_tw = s.title_tw || ''
-      s.desc_en = s.desc_en || ''; s.desc_ja = s.desc_ja || ''; s.desc_ko = s.desc_ko || ''; s.desc_tw = s.desc_tw || ''
-      s.tag_en = s.tag_en || ''; s.tag_ja = s.tag_ja || ''; s.tag_ko = s.tag_ko || ''; s.tag_tw = s.tag_tw || ''
-    }
-    return s
-  })
-}
-function saveHeroSlides(d) { localStorage.setItem('heroSlides', JSON.stringify(d)); debouncedPush() }
+function savePlans(d) { localStorage.setItem('plans', JSON.stringify(d)); pushToGithub() }
+function getHeroSlides() { return JSON.parse(localStorage.getItem('heroSlides') || '[]') }
+function saveHeroSlides(d) { localStorage.setItem('heroSlides', JSON.stringify(d)); pushToGithub() }
 function planClass(p) { if (p.includes('PDF') || p.includes('完整')) return 'pdf'; if (p.includes('视频')) return 'video'; if (p.includes('赞助') || p.includes('茶')) return 'support'; return 'vip' }
 
 function renderBars(plans) {
@@ -453,7 +119,7 @@ function switchTab(tab, btn) {
   if (tab === 'prices') loadPrices()
   if (tab === 'hero') loadHeroSlides()
   if (tab === 'translate') loadTransStatus()
-  if (tab === 'cloud') setTimeout(function(){try{loadStats()}catch(e){}},100)
+  if (tab === 'cloud') loadGithubStatus()
 }
 
 function loadArticles() {
@@ -477,22 +143,10 @@ function handleFileUpload(input) {
   if (!file) return
   const reader = new FileReader()
   reader.onload = function(e) {
-    var img = new Image()
-    img.onload = function() {
-      var canvas = document.createElement('canvas')
-      var maxW = 600
-      var w = img.width > maxW ? maxW : img.width
-      var h = img.height * (w / img.width)
-      canvas.width = w
-      canvas.height = h
-      var ctx = canvas.getContext('2d')
-      ctx.drawImage(img, 0, 0, w, h)
-      currentImg = canvas.toDataURL('image/jpeg', 0.7)
-      document.getElementById('ed-imgPreview').src = currentImg
-      document.getElementById('ed-imgPreview').style.display = 'block'
-      document.getElementById('ed-imgUrl').value = ''
-    }
-    img.src = e.target.result
+    currentImg = e.target.result
+    document.getElementById('ed-imgPreview').src = currentImg
+    document.getElementById('ed-imgPreview').style.display = 'block'
+    document.getElementById('ed-imgUrl').value = ''
   }
   reader.readAsDataURL(file)
 }
@@ -656,10 +310,6 @@ function loadHeroSlides() {
     <div class="hero-slide-item">
       <img class="preview" src="${s.img}" onerror="this.outerHTML='<div class=preview>图片加载失败</div>'">
       <div class="fields">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-          <span style="font-size:12px;color:#888">多语言状态：${getHeroSlideStatus(s)}</span>
-          <button class="btn btn-primary btn-sm" onclick="translateSingleHeroSlide(${i})">翻译此条</button>
-        </div>
         <div class="img-input-group" style="margin-bottom:6px">
           <input type="file" accept="image/*" onchange="handleHeroFile(${i},this)" style="font-size:11px">
           <input value="${s.img||''}" placeholder="或输入图片URL" onchange="handleHeroUrl(${i},this.value)" style="font-size:11px">
@@ -679,50 +329,11 @@ function loadHeroSlides() {
   `).join('')
 }
 
-async function translateSingleHeroSlide(i) {
-  const slides = getHeroSlides()
-  slides[i] = await translateHeroSlide(slides[i])
-  saveHeroSlides(slides)
-  loadHeroSlides()
-}
-
 function addHeroSlide() {
   const slides = getHeroSlides()
-  slides.push({ img: '', title: '新头图', desc: '描述文字', tag: '精选', c1: '#1a1a2e', c2: '#16213e', linkId: '', title_en: '', title_ja: '', title_ko: '', title_tw: '', desc_en: '', desc_ja: '', desc_ko: '', desc_tw: '', tag_en: '', tag_ja: '', tag_ko: '', tag_tw: '' })
+  slides.push({ img: '', title: '新头图', desc: '描述文字', tag: '精选', c1: '#1a1a2e', c2: '#16213e', linkId: '' })
   saveHeroSlides(slides)
   loadHeroSlides()
-}
-
-async function translateHeroSlide(slide) {
-  const result = {...slide}
-  for (const lang of LANGS) {
-    if (slide.title) result['title_' + lang] = await translateAPI(slide.title, lang)
-    if (slide.desc) result['desc_' + lang] = await translateAPI(slide.desc, lang)
-    if (slide.tag) result['tag_' + lang] = await translateAPI(slide.tag, lang)
-  }
-  return result
-}
-
-async function translateAllHeroSlides() {
-  const slides = getHeroSlides()
-  const btn = document.getElementById('translateHeroBtn')
-  if (btn) { btn.textContent = '翻译中...'; btn.disabled = true }
-  const translated = []
-  for (const s of slides) {
-    translated.push(await translateHeroSlide(s))
-  }
-  saveHeroSlides(translated)
-  if (btn) { btn.textContent = '翻译全部头图'; btn.disabled = false }
-  loadHeroSlides()
-  alert('头图多语言翻译完成！')
-}
-
-function getHeroSlideStatus(s) {
-  const langs = ['en', 'ja', 'ko', 'tw']
-  const has = langs.filter(l => s['title_' + l] || s['desc_' + l] || s['tag_' + l])
-  if (has.length === 0) return '<span style="color:#faad14">未翻译</span>'
-  if (has.length < 4) return '<span style="color:#faad14">部分翻译 (' + has.length + '/4)</span>'
-  return '<span style="color:#52c41a">已翻译 (4/4)</span>'
 }
 
 function handleHeroFile(i, input) {
@@ -730,23 +341,10 @@ function handleHeroFile(i, input) {
   if (!file) return
   const reader = new FileReader()
   reader.onload = function(e) {
-    var img = new Image()
-    img.onload = function() {
-      var canvas = document.createElement('canvas')
-      var maxW = 800
-      var w = img.width > maxW ? maxW : img.width
-      var h = img.height * (w / img.width)
-      canvas.width = w
-      canvas.height = h
-      var ctx = canvas.getContext('2d')
-      ctx.drawImage(img, 0, 0, w, h)
-      var compressed = canvas.toDataURL('image/jpeg', 0.7)
-      var slides = getHeroSlides()
-      slides[i].img = compressed
-      saveHeroSlides(slides)
-      loadHeroSlides()
-    }
-    img.src = e.target.result
+    const slides = getHeroSlides()
+    slides[i].img = e.target.result
+    saveHeroSlides(slides)
+    loadHeroSlides()
   }
   reader.readAsDataURL(file)
 }
@@ -758,16 +356,10 @@ function handleHeroUrl(i, url) {
   loadHeroSlides()
 }
 
-async function updateSlide(i, key, val) {
+function updateSlide(i, key, val) {
   const slides = getHeroSlides()
   slides[i][key] = val
-  if (key === 'title' || key === 'desc' || key === 'tag') {
-    for (const lang of LANGS) {
-      slides[i][key + '_' + lang] = await translateAPI(val, lang)
-    }
-  }
   saveHeroSlides(slides)
-  loadHeroSlides()
 }
 
 function deleteSlide(i) {
@@ -828,66 +420,57 @@ function syncBuiltInRecipes() {
   saveArticles([...merged, ...customOnly])
 }
 
+const ADMIN_USER = 'admin'
+const ADMIN_PASS = 'dsw315210**'
+const LOGIN_EXPIRE_DAYS = 3
+const REMEMBER_EXPIRE_DAYS = 30
+const GITHUB_REPO = 'a5782181/wangzhan'
+
+function showLogin() {
+  document.getElementById('loginOverlay').classList.add('on')
+}
+
+function showAdmin() {
+  document.getElementById('loginOverlay').classList.remove('on')
+}
+
 function doLogin() {
-  var u = document.getElementById('loginUser').value.trim()
-  var p = document.getElementById('loginPass').value
-  var e = document.getElementById('loginError')
-  e.style.display = 'none'
-  var btn = document.getElementById('loginBtn')
-  btn.textContent = '登录中...'
-  btn.disabled = true
-  fetch('/api/admin/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ password: p })
-  }).then(function(r) { return r.json() }).then(function(data) {
-    btn.textContent = '登 录'
-    btn.disabled = false
-    if (data.success) {
-      localStorage.setItem('adminSession', JSON.stringify({ user: 'admin', expire: Date.now() + 259200000 }))
-      if (document.getElementById('loginRemember').checked) {
-        localStorage.setItem('adminSaved', JSON.stringify({ user: u, pass: p, expire: Date.now() + 2592000000 }))
-      } else {
-        localStorage.removeItem('adminSaved')
-      }
-      document.getElementById('loginOverlay').classList.remove('on')
-      try { loadStats() } catch (ex) {}
+  var user = document.getElementById('loginUser').value.trim()
+  var pass = document.getElementById('loginPass').value
+  var errEl = document.getElementById('loginError')
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    errEl.style.display = 'none'
+    var session = { user: user, expire: Date.now() + LOGIN_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
+    localStorage.setItem('adminSession', JSON.stringify(session))
+    if (document.getElementById('loginRemember').checked) {
+      var saved = { user: user, pass: pass, expire: Date.now() + REMEMBER_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
+      localStorage.setItem('adminSaved', JSON.stringify(saved))
     } else {
-      e.style.display = 'block'
-      e.textContent = data.message || '登录失败'
-      document.getElementById('loginPass').value = ''
-      document.getElementById('loginPass').focus()
+      localStorage.removeItem('adminSaved')
     }
-  }).catch(function() {
-    btn.textContent = '登 录'
-    btn.disabled = false
-    e.style.display = 'block'
-    e.textContent = '网络错误，请重试'
-  })
+    showAdmin()
+    try { loadStats() } catch(e) {}
+  } else {
+    errEl.style.display = 'block'
+    errEl.textContent = '账号或密码错误'
+    document.getElementById('loginPass').value = ''
+    document.getElementById('loginPass').focus()
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('adminSession')
+  location.reload()
 }
 
 function loadFromGithub() {
-  fetch('/api/admin/read')
-    .then(function(r) { return r.json() })
-    .then(function(resp) {
-      var data = resp.data
-      if (data) {
+  fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json?t=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : null })
+    .then(function(data) {
       if (data) {
         if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
         if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
-        if (data.heroSlides) {
-          var slides = data.heroSlides.map(function(s) {
-            if (!s.title_en && !s.title_ja) {
-              s.title_en = s.title_en || ''; s.title_ja = s.title_ja || ''; s.title_ko = s.title_ko || ''; s.title_tw = s.title_tw || ''
-              s.desc_en = s.desc_en || ''; s.desc_ja = s.desc_ja || ''; s.desc_ko = s.desc_ko || ''; s.desc_tw = s.desc_tw || ''
-              s.tag_en = s.tag_en || ''; s.tag_ja = s.tag_ja || ''; s.tag_ko = s.tag_ko || ''; s.tag_tw = s.tag_tw || ''
-            }
-            return s
-          })
-          localStorage.setItem('heroSlides', JSON.stringify(slides))
-        }
-        if (data.clicks) localStorage.setItem('clicks', JSON.stringify(data.clicks))
-        if (data.visits) localStorage.setItem('visits', JSON.stringify(data.visits))
+        if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
       }
     })
     .catch(function() {})
@@ -972,8 +555,114 @@ function clearTransKeys() {
   setTimeout(() => statusEl.style.display = 'none', 3000)
 }
 
-async function pushToGithub() {
+// GitHub 同步功能
+const GITHUB_REPO = 'a5782181/wangzhan'
+
+function getGithubConfig() {
+  return JSON.parse(localStorage.getItem('githubConfig') || 'null')
+}
+
+function loadGithubStatus() {
+  const config = getGithubConfig()
+  const statusEl = document.getElementById('githubCurrentStatus')
+  const tokenInput = document.getElementById('githubToken')
+  
+  if (config && config.token) {
+    statusEl.innerHTML = '<span style="color:#52c41a;font-weight:600">已配置 GitHub 同步</span><br>Token: ' + config.token.substring(0, 7) + '...'
+    tokenInput.value = config.token
+  } else {
+    statusEl.innerHTML = '<span style="color:#faad14;font-weight:600">未配置 GitHub 同步（数据仅保存在本地）</span>'
+    tokenInput.value = ''
+  }
+}
+
+function saveGithubConfig() {
+  const token = document.getElementById('githubToken').value.trim()
   const statusEl = document.getElementById('githubStatus')
+  
+  if (!token) {
+    localStorage.removeItem('githubConfig')
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#faad14'
+    statusEl.textContent = '已关闭 GitHub 同步'
+    loadGithubStatus()
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  localStorage.setItem('githubConfig', JSON.stringify({ token }))
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#52c41a'
+  statusEl.textContent = '配置已保存！'
+  loadGithubStatus()
+  setTimeout(() => statusEl.style.display = 'none', 3000)
+}
+
+function clearGithubConfig() {
+  localStorage.removeItem('githubConfig')
+  document.getElementById('githubToken').value = ''
+  const statusEl = document.getElementById('githubStatus')
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#faad14'
+  statusEl.textContent = '已清除 GitHub 配置'
+  loadGithubStatus()
+  setTimeout(() => statusEl.style.display = 'none', 3000)
+}
+
+async function testGithubConnection() {
+  const config = getGithubConfig()
+  const statusEl = document.getElementById('githubStatus')
+  
+  if (!config || !config.token) {
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '请先保存配置'
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#1890ff'
+  statusEl.textContent = '测试连接中...'
+  
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}`, {
+      headers: { 'Authorization': `token ${config.token}` }
+    })
+    if (res.ok) {
+      statusEl.style.color = '#52c41a'
+      statusEl.textContent = '连接成功！可以正常访问仓库。'
+    } else {
+      statusEl.style.color = '#f5222d'
+      statusEl.textContent = '连接失败：请检查 Token 是否正确。'
+    }
+  } catch (e) {
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '连接失败：网络错误'
+  }
+  setTimeout(() => statusEl.style.display = 'none', 5000)
+}
+
+async function getFileSha(path) {
+  const config = getGithubConfig()
+  if (!config || !config.token) return null
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
+      headers: { 'Authorization': `token ${config.token}` }
+    })
+    if (res.ok) {
+      const data = await res.json()
+      return data.sha
+    }
+  } catch (e) {}
+  return null
+}
+
+async function pushToGithub() {
+  const config = getGithubConfig()
+  const statusEl = document.getElementById('githubStatus')
+  
+  if (!config || !config.token) return
   
   if (statusEl) {
     statusEl.style.display = 'block'
@@ -985,26 +674,38 @@ async function pushToGithub() {
     articles: getArticles(),
     plans: getPlans(),
     heroSlides: getHeroSlides(),
-    clicks: JSON.parse(localStorage.getItem('clicks') || '[]'),
-    visits: JSON.parse(localStorage.getItem('visits') || '[]'),
     lastSync: new Date().toISOString()
   }
   
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))))
+  
   try {
-    const res = await fetch('/api/admin/write', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    const result = await res.json()
+    const sha = await getFileSha('data/site.json')
+    const body = {
+      message: '自动更新网站数据',
+      content: content
+    }
+    if (sha) body.sha = sha
     
-    if (statusEl) {
-      if (result.success) {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/data/site.json`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${config.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+    
+    if (res.ok) {
+      if (statusEl) {
         statusEl.style.color = '#52c41a'
-        statusEl.textContent = result.message || '推送成功！'
-      } else {
+        statusEl.textContent = '推送成功！数据已提交到 GitHub。'
+      }
+    } else {
+      const err = await res.json()
+      if (statusEl) {
         statusEl.style.color = '#f5222d'
-        statusEl.textContent = '推送失败：' + (result.message || '未知错误')
+        statusEl.textContent = '推送失败：' + (err.message || res.statusText)
       }
     }
   } catch (e) {
@@ -1021,10 +722,4 @@ async function syncToGithub() {
 }
 
 checkLogin()
-setInterval(function(){
-  loadFromGithub()
-  setTimeout(function(){try{loadStats()}catch(e){}},1500)
-},30000)
-</script>
-</body>
-</html>
+

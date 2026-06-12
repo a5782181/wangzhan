@@ -863,7 +863,21 @@
       "tag_tw": ""
     }
   ],
-  "clicks": [],
+  "clicks": [
+    {
+      "time": "2026-06-12T17:23:27.006Z",
+      "type": "click",
+      "visitor": "v_debug_1",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "plan": "test-race",
+      "price": "1.00",
+      "recipe": "????",
+      "page": "/"
+    }
+  ],
   "visits": [],
-  "lastSync": "2026-06-12T17:22:50.611Z"
+  "lastSync": "2026-06-12T17:23:27.230Z"
 }

@@ -847,29 +847,7 @@
       "tag_tw": ""
     }
   ],
-  "clicks": [
-    {
-      "time": "2026-06-12T14:47:01.528Z",
-      "plan": "??",
-      "price": "�1",
-      "recipe": "????",
-      "visitor": "v_1781275621531",
-      "ip": "45.67.201.99",
-      "country": "未知",
-      "city": ""
-    }
-  ],
-  "visits": [
-    {
-      "time": "2026-06-12T12:47:41.740Z",
-      "type": "visit",
-      "visitor": "v_1781267448485_srj3s1",
-      "ip": "unknown",
-      "country": "unknown",
-      "city": "unknown",
-      "cc": "",
-      "page": "/wangzhan/index.html"
-    }
-  ],
-  "lastSync": "2026-06-12T15:29:36.810Z"
+  "clicks": [],
+  "visits": [],
+  "lastSync": "2026-06-12T15:38:49.151Z"
 }

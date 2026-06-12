@@ -787,27 +787,43 @@
       "key": "完整菜谱PDF",
       "name": "📖 完整菜谱",
       "price": "19.99",
-      "enabled": true
+      "enabled": true,
+      "name_en": "📖 Complete Recipes",
+      "name_ja": "レシピ📖 を完成させる",
+      "name_ko": "레시피 📖 완료하기",
+      "name_tw": "📖 完整食譜"
     },
     {
       "key": "视频教程",
       "name": "🎬 视频教程",
       "price": "39.99",
-      "enabled": true
+      "enabled": true,
+      "name_en": "Video Tutorials",
+      "name_ja": "🎬 ビデオチュートリアル",
+      "name_ko": "🎬 동영상 튜토리얼",
+      "name_tw": "🎬 影片教學"
     },
     {
       "key": "赞助支持",
       "name": "☕ 赞助支持",
       "price": "9.99",
-      "enabled": true
+      "enabled": true,
+      "name_en": "☕ Sponsorship Support",
+      "name_ja": "☕ スポンサーシップサポート",
+      "name_ko": "☕ 후원 지원",
+      "name_tw": "☕ 贊助支持"
     },
     {
       "key": "一对一带做",
       "name": "👨‍🍳 一对一带做",
       "price": "199",
-      "enabled": true
+      "enabled": true,
+      "name_en": "Do it 👨‍🍳 one-on-one",
+      "name_ja": "👨‍🍳 1対1で行う",
+      "name_ko": "👨‍🍳 일대일 미팅 진행하기",
+      "name_tw": "👨‍🍳 一對一帶做"
     }
   ],
   "heroSlides": [],
-  "lastSync": "2026-06-12T11:48:08.681Z"
+  "lastSync": "2026-06-12T11:48:16.913Z"
 }

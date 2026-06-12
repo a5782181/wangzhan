@@ -897,7 +897,6 @@ function loadFromGithub() {
     .then(function(resp) {
       var data = resp.data
       if (data) {
-      if (data) {
         if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
         if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
         if (data.heroSlides) {

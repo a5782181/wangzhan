@@ -864,6 +864,17 @@
     }
   ],
   "clicks": [],
-  "visits": [],
-  "lastSync": "2026-06-12T18:41:35.187Z"
+  "visits": [
+    {
+      "time": "2026-06-12T19:03:08.750Z",
+      "type": "visit",
+      "visitor": "v_1781275702223_0s5g24",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "page": "/index.html"
+    }
+  ],
+  "lastSync": "2026-06-12T19:03:09.113Z"
 }

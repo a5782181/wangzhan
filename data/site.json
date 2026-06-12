@@ -7,6 +7,7 @@
       "diff": "中",
       "time": "40分钟",
       "desc": "东北硬菜代表，外酥里嫩，酸甜适口。",
+      "img": "../images/recipes/guobaorou.jpg",
       "ingredients": [
         "猪里脊肉 300g",
         "土豆淀粉 150g",
@@ -28,7 +29,6 @@
         "加入白糖、白醋、番茄酱炒匀",
         "下炸好的肉片快速翻炒均匀即可"
       ],
-      "img": "../images/recipes/guobaorou.jpg",
       "paid": false,
       "createdAt": "2026-06-11T00:00:00Z",
       "name_en": "Breaded Meat in a Pot",
@@ -131,6 +131,7 @@
       "diff": "低",
       "time": "30分钟",
       "desc": "四川家常菜第一名，肥而不腻，配饭神器。",
+      "img": "../images/recipes/huiguorou.jpg",
       "ingredients": [
         "五花肉 300g",
         "蒜苗 3根",
@@ -150,7 +151,6 @@
         "加入豆豉、蒜白翻炒",
         "加入生抽、白糖调味，最后下蒜叶翻炒几下即可"
       ],
-      "img": "../images/recipes/huiguorou.jpg",
       "paid": true,
       "createdAt": "2026-06-11T00:00:00Z",
       "name_en": "Twice cooked pork",
@@ -785,45 +785,29 @@
   "plans": [
     {
       "key": "完整菜谱PDF",
-      "name": "📖 完整菜谱",
+      "name": "📖 完整菜谱PDF",
       "price": "19.99",
-      "enabled": true,
-      "name_en": "📖 Complete Recipes",
-      "name_ja": "レシピ📖 を完成させる",
-      "name_ko": "레시피 📖 완료하기",
-      "name_tw": "📖 完整食譜"
+      "enabled": true
     },
     {
       "key": "视频教程",
       "name": "🎬 视频教程",
       "price": "39.99",
-      "enabled": true,
-      "name_en": "Video Tutorials",
-      "name_ja": "🎬 ビデオチュートリアル",
-      "name_ko": "🎬 동영상 튜토리얼",
-      "name_tw": "🎬 影片教學"
+      "enabled": true
     },
     {
       "key": "赞助支持",
       "name": "☕ 赞助支持",
       "price": "9.99",
-      "enabled": true,
-      "name_en": "☕ Sponsorship Support",
-      "name_ja": "☕ スポンサーシップサポート",
-      "name_ko": "☕ 후원 지원",
-      "name_tw": "☕ 贊助支持"
+      "enabled": true
     },
     {
       "key": "一对一带做",
       "name": "👨‍🍳 一对一带做",
       "price": "199",
-      "enabled": true,
-      "name_en": "Do it 👨‍🍳 one-on-one",
-      "name_ja": "👨‍🍳 1対1で行う",
-      "name_ko": "👨‍🍳 일대일 미팅 진행하기",
-      "name_tw": "👨‍🍳 一對一帶做"
+      "enabled": true
     }
   ],
   "heroSlides": [],
-  "lastSync": "2026-06-12T11:48:49.410Z"
+  "lastSync": "2026-06-12T11:49:59.992Z"
 }

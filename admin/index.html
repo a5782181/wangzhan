@@ -513,10 +513,22 @@ function handleFileUpload(input) {
   if (!file) return
   const reader = new FileReader()
   reader.onload = function(e) {
-    currentImg = e.target.result
-    document.getElementById('ed-imgPreview').src = currentImg
-    document.getElementById('ed-imgPreview').style.display = 'block'
-    document.getElementById('ed-imgUrl').value = ''
+    var img = new Image()
+    img.onload = function() {
+      var canvas = document.createElement('canvas')
+      var maxW = 600
+      var w = img.width > maxW ? maxW : img.width
+      var h = img.height * (w / img.width)
+      canvas.width = w
+      canvas.height = h
+      var ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, w, h)
+      currentImg = canvas.toDataURL('image/jpeg', 0.7)
+      document.getElementById('ed-imgPreview').src = currentImg
+      document.getElementById('ed-imgPreview').style.display = 'block'
+      document.getElementById('ed-imgUrl').value = ''
+    }
+    img.src = e.target.result
   }
   reader.readAsDataURL(file)
 }
@@ -754,10 +766,23 @@ function handleHeroFile(i, input) {
   if (!file) return
   const reader = new FileReader()
   reader.onload = function(e) {
-    const slides = getHeroSlides()
-    slides[i].img = e.target.result
-    saveHeroSlides(slides)
-    loadHeroSlides()
+    var img = new Image()
+    img.onload = function() {
+      var canvas = document.createElement('canvas')
+      var maxW = 800
+      var w = img.width > maxW ? maxW : img.width
+      var h = img.height * (w / img.width)
+      canvas.width = w
+      canvas.height = h
+      var ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, w, h)
+      var compressed = canvas.toDataURL('image/jpeg', 0.7)
+      var slides = getHeroSlides()
+      slides[i].img = compressed
+      saveHeroSlides(slides)
+      loadHeroSlides()
+    }
+    img.src = e.target.result
   }
   reader.readAsDataURL(file)
 }

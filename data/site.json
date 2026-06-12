@@ -880,8 +880,19 @@
       "country": "Hong Kong",
       "city": "Shatin",
       "countryCode": "HK"
+    },
+    {
+      "time": "2026-06-12T16:25:02.945Z",
+      "plan": "test",
+      "price": "�1",
+      "recipe": "??",
+      "visitor": "v_1781281502948",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK"
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T16:22:40.213Z"
+  "lastSync": "2026-06-12T16:25:03.349Z"
 }

@@ -318,6 +318,7 @@ function showAdmin(){document.getElementById('loginOverlay').classList.remove('o
 function doLogout(){localStorage.removeItem('adminSession');location.reload()}
 </script>
 <script>
+const API_BASE = 'https://wangzhan-nine.vercel.app/api'
 const barColors = ['#1890ff', '#52c41a', '#fa8c16', '#f5222d']
 const defaultPlans = [
   { key: '完整菜谱PDF', name: '📖 完整菜谱PDF', price: '19.99', enabled: true },
@@ -441,7 +442,26 @@ function loadStats() {
   document.getElementById('updateTime').textContent = '更新于 ' + new Date().toLocaleString('zh-CN')
 }
 
-function clearData() { if (confirm('确定清空所有数据？（访问记录+点击记录+解锁记录）')) { localStorage.removeItem('clicks'); localStorage.removeItem('visits'); localStorage.removeItem('unlocked'); loadStats() } }
+function clearData() {
+  if (confirm('确定清空所有数据？（访问记录+点击记录+解锁记录）')) {
+    localStorage.removeItem('clicks')
+    localStorage.removeItem('visits')
+    localStorage.removeItem('unlocked')
+    loadStats()
+    fetch(API_BASE + '/admin/write', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        articles: getArticles(),
+        plans: getPlans(),
+        heroSlides: getHeroSlides(),
+        clicks: [],
+        visits: [],
+        lastSync: new Date().toISOString()
+      })
+    }).catch(function(){})
+  }
+}
 
 function switchTab(tab, btn) {
   document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'))
@@ -836,7 +856,7 @@ function doLogin() {
   var btn = document.getElementById('loginBtn')
   btn.textContent = '登录中...'
   btn.disabled = true
-  fetch('/api/admin/login', {
+  fetch(API_BASE + '/admin/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password: p })
@@ -867,7 +887,7 @@ function doLogin() {
 }
 
 function loadFromGithub() {
-  fetch('/api/admin/read')
+  fetch(API_BASE + '/admin/read')
     .then(function(r) { return r.json() })
     .then(function(resp) {
       var data = resp.data
@@ -991,7 +1011,7 @@ async function pushToGithub() {
   }
   
   try {
-    const res = await fetch('/api/admin/write', {
+    const res = await fetch(API_BASE + '/admin/write', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)

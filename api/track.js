@@ -66,11 +66,9 @@ export default async function handler(req, res) {
   const country = body.country || COUNTRY_NAMES[vercelCountry] || vercelCountry || '未知'
   const city = (vercelCity && vercelCity !== 'Unknown' ? vercelCity : body.city) || ''
 
-  const click = {
+  const record = {
     time: new Date().toISOString(),
-    plan: body.plan || 'unknown',
-    price: body.price || 'unknown',
-    recipe: body.recipeName || body.recipe || 'unknown',
+    type: body.type || 'click',
     visitor: body.visitor || 'v_' + Date.now(),
     ip: ip,
     country: country,
@@ -78,11 +76,27 @@ export default async function handler(req, res) {
     countryCode: vercelCountry || ''
   }
 
+  if (record.type !== 'visit') {
+    record.plan = body.plan || 'unknown'
+    record.price = body.price || 'unknown'
+    record.recipe = body.recipeName || body.recipe || 'unknown'
+    record.page = body.page || ''
+  } else {
+    record.page = body.page || ''
+  }
+
   try {
     const [siteData, sha] = await Promise.all([readData(token), getFileSha(token)])
     if (!siteData.clicks) siteData.clicks = []
-    siteData.clicks.push(click)
-    if (siteData.clicks.length > 500) siteData.clicks = siteData.clicks.slice(-500)
+    if (!siteData.visits) siteData.visits = []
+    if (record.type === 'visit') {
+      const today = new Date().toISOString().slice(0, 10)
+      const alreadyToday = siteData.visits.some(v => v.visitor === record.visitor && v.time && v.time.slice(0, 10) === today)
+      if (!alreadyToday) siteData.visits.push(record)
+    } else {
+      siteData.clicks.push(record)
+      if (siteData.clicks.length > 500) siteData.clicks = siteData.clicks.slice(-500)
+    }
     siteData.lastSync = new Date().toISOString()
     const ok = await writeData(token, siteData, sha)
     if (ok) return res.status(200).json({ success: true, message: '已记录并同步' })

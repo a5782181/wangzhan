@@ -12,17 +12,30 @@ export default async function handler(req, res) {
   const token = process.env.GITHUB_TOKEN
   if (!token) return res.status(200).json({ success: false, message: '未配置GitHub Token' })
 
-  const data = req.body
-  if (!data) return res.status(200).json({ success: false, message: '无数据' })
+  const incoming = req.body
+  if (!incoming) return res.status(200).json({ success: false, message: '无数据' })
 
   try {
+    let existing = { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
+    const rawRes = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
+    if (rawRes.ok) existing = await rawRes.json()
+
+    const merged = {
+      articles: incoming.articles !== undefined ? incoming.articles : existing.articles,
+      plans: incoming.plans !== undefined ? incoming.plans : existing.plans,
+      heroSlides: incoming.heroSlides !== undefined ? incoming.heroSlides : existing.heroSlides,
+      clicks: existing.clicks || [],
+      visits: existing.visits || [],
+      lastSync: new Date().toISOString()
+    }
+
     const shaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
       headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
     })
     let sha = null
     if (shaRes.ok) sha = (await shaRes.json()).sha
 
-    const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')
+    const content = Buffer.from(JSON.stringify(merged, null, 2)).toString('base64')
     const body = { message: '后台管理 - 更新网站数据', content }
     if (sha) body.sha = sha
 

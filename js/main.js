@@ -357,6 +357,7 @@ async function recordVisit(){
   if(!alreadyToday){
     visits.push(visit)
     localStorage.setItem('visits',JSON.stringify(visits))
+    try{await fetch(API+'/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'visit',visitor,page:location.pathname})})}catch(e){}
   }
 }
 

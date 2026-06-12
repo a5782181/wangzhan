@@ -320,6 +320,7 @@ function doLogout(){localStorage.removeItem('adminSession');location.reload()}
 <script>
 const API_BASE = 'https://wangzhan-nine.vercel.app/api'
 const barColors = ['#1890ff', '#52c41a', '#fa8c16', '#f5222d']
+let _clearCooldown = 0
 const defaultPlans = [
   { key: '完整菜谱PDF', name: '📖 完整菜谱PDF', price: '19.99', enabled: true },
   { key: '视频教程', name: '🎬 视频教程', price: '39.99', enabled: true },
@@ -448,18 +449,13 @@ function clearData() {
     localStorage.removeItem('visits')
     localStorage.removeItem('unlocked')
     loadStats()
-    fetch(API_BASE + '/admin/write', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        articles: getArticles(),
-        plans: getPlans(),
-        heroSlides: getHeroSlides(),
-        clicks: [],
-        visits: [],
-        lastSync: new Date().toISOString()
+    _clearCooldown = Date.now()
+    fetch(API_BASE + '/admin/clear', { method: 'POST' })
+      .then(function(r){return r.json()})
+      .then(function(resp){
+        if(!resp.success)console.warn('清空GitHub失败:',resp.message)
       })
-    }).catch(function(){})
+      .catch(function(){})
   }
 }
 
@@ -1009,8 +1005,6 @@ async function pushToGithub() {
     articles: getArticles(),
     plans: getPlans(),
     heroSlides: getHeroSlides(),
-    clicks: JSON.parse(localStorage.getItem('clicks') || '[]'),
-    visits: JSON.parse(localStorage.getItem('visits') || '[]'),
     lastSync: new Date().toISOString()
   }
   
@@ -1046,6 +1040,7 @@ async function syncToGithub() {
 
 checkLogin()
 setInterval(function(){
+  if (Date.now() - _clearCooldown < 15000) return
   loadFromGithub()
   setTimeout(function(){try{loadStats()}catch(e){}},1500)
 },30000)

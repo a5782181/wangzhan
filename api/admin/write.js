@@ -1,18 +1,19 @@
 const REPO = 'a5782181/wangzhan'
 const FILE_PATH = 'data/site.json'
 
-async function readRaw() {
-  const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
-  if (res.ok) return await res.json()
-  return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
-}
-
-async function getSha(token) {
-  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+async function readLatest(token) {
+  const metaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
     headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
   })
-  if (res.ok) return (await res.json()).sha
-  return null
+  if (!metaRes.ok) return { data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }, sha: null }
+  const meta = await metaRes.json()
+  const blobRes = await fetch(meta.git_url, {
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+  })
+  if (!blobRes.ok) return { data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }, sha: meta.sha }
+  const blob = await blobRes.json()
+  const data = JSON.parse(Buffer.from(blob.content, 'base64').toString())
+  return { data, sha: meta.sha }
 }
 
 export default async function handler(req, res) {
@@ -31,8 +32,7 @@ export default async function handler(req, res) {
 
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
-      const existing = await readRaw()
-      const sha = await getSha(token)
+      const { data: existing, sha } = await readLatest(token)
 
       const merged = {
         articles: incoming.articles !== undefined ? incoming.articles : existing.articles,

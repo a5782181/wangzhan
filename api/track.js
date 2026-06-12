@@ -15,23 +15,19 @@ const COUNTRY_NAMES = {
   KE:'Kenya', PK:'Pakistan', BD:'Bangladesh', LK:'Sri Lanka', MM:'Myanmar'
 }
 
-async function readRaw() {
-  try {
-    const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`, { signal: AbortSignal.timeout(10000) })
-    if (!res.ok) return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
-    const text = await res.text()
-    return JSON.parse(text)
-  } catch (e) {
-    return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
-  }
-}
-
-async function getSha(token) {
-  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+async function readDataWithSha(token) {
+  const metaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
     headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
   })
-  if (res.ok) return (await res.json()).sha
-  return null
+  if (!metaRes.ok) return { data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }, sha: null }
+  const meta = await metaRes.json()
+  const blobRes = await fetch(meta.git_url, {
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+  })
+  if (!blobRes.ok) return { data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }, sha: meta.sha }
+  const blob = await blobRes.json()
+  const data = JSON.parse(Buffer.from(blob.content, 'base64').toString())
+  return { data, sha: meta.sha }
 }
 
 async function writeWithRetry(token, data, sha, record, maxRetries = 3) {
@@ -47,9 +43,9 @@ async function writeWithRetry(token, data, sha, record, maxRetries = 3) {
     })
     if (res.ok) return true
     if (res.status === 409 && attempt < maxRetries - 1) {
-      const fresh = await readRaw()
-      sha = await getSha(token)
-      data = fresh
+      const fresh = await readDataWithSha(token)
+      sha = fresh.sha
+      data = fresh.data
       if (!data.clicks) data.clicks = []
       if (!data.visits) data.visits = []
       if (record.type === 'visit') {
@@ -109,7 +105,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [siteData, sha] = await Promise.all([readRaw(), getSha(token)])
+    const { data: siteData, sha } = await readDataWithSha(token)
     if (!siteData.clicks) siteData.clicks = []
     if (!siteData.visits) siteData.visits = []
     if (record.type === 'visit') {

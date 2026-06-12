@@ -12,12 +12,20 @@ export default async function handler(req, res) {
   if (!token) return res.status(200).json({ success: false, message: '未配置GitHub Token' })
 
   try {
-    const ghRes = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
-    if (ghRes.ok) {
-      const data = await ghRes.json()
-      return res.status(200).json({ success: true, data })
-    }
-    return res.status(200).json({ success: true, data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] } })
+    const metaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    })
+    if (!metaRes.ok) return res.status(200).json({ success: true, data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] } })
+
+    const meta = await metaRes.json()
+    const blobRes = await fetch(meta.git_url, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    })
+    if (!blobRes.ok) return res.status(200).json({ success: true, data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] } })
+
+    const blob = await blobRes.json()
+    const data = JSON.parse(Buffer.from(blob.content, 'base64').toString())
+    return res.status(200).json({ success: true, data })
   } catch (e) {
     return res.status(200).json({ success: false, message: e.message })
   }

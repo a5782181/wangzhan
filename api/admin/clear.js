@@ -1,14 +1,6 @@
 const REPO = 'a5782181/wangzhan'
 const FILE_PATH = 'data/site.json'
 
-async function getSha(token) {
-  const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-  })
-  if (res.ok) return (await res.json()).sha
-  return null
-}
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
@@ -22,7 +14,12 @@ export default async function handler(req, res) {
 
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
-      const sha = await getSha(token)
+      const metaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+      })
+      let sha = null
+      if (metaRes.ok) sha = (await metaRes.json()).sha
+
       const data = { articles: [], plans: [], heroSlides: [], clicks: [], visits: [], lastSync: new Date().toISOString() }
 
       const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')

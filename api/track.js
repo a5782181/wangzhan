@@ -1,43 +1,52 @@
 const REPO = 'a5782181/wangzhan'
 const FILE_PATH = 'data/site.json'
 
-const COUNTRY_NAMES = {
-  CN:'中国', US:'United States', GB:'United Kingdom', JP:'日本', KR:'한국',
-  TW:'Taiwan', HK:'Hong Kong', DE:'Germany', FR:'France', CA:'Canada',
-  AU:'Australia', SG:'Singapore', MY:'Malaysia', TH:'Thailand', VN:'Vietnam',
-  IN:'India', PH:'Philippines', ID:'Indonesia', MO:'Macau', RU:'Russia',
-  BR:'Brazil', MX:'Mexico', IT:'Italy', ES:'Spain', NL:'Netherlands',
-  CH:'Switzerland', SE:'Sweden', NO:'Norway', DK:'Denmark', FI:'Finland',
-  NZ:'New Zealand', ZA:'South Africa', AR:'Argentina', IL:'Israel',
-  PT:'Portugal', BE:'Belgium', AT:'Austria', IE:'Ireland', PL:'Poland',
-  CZ:'Czech', GR:'Greece', HU:'Hungary', RO:'Romania', UA:'Ukraine',
-  TR:'Turkey', SA:'Saudi Arabia', AE:'UAE', EG:'Egypt', NG:'Nigeria',
-  KE:'Kenya', PK:'Pakistan', BD:'Bangladesh', LK:'Sri Lanka', MM:'Myanmar'
+async function readRaw(token) {
+  const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
+  if (res.ok) return await res.json()
+  return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
 }
 
-async function readData(token) {
-  try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-    })
-    if (res.ok) {
-      const json = await res.json()
-      return { data: JSON.parse(Buffer.from(json.content, 'base64').toString()), sha: json.sha }
-    }
-  } catch (e) {}
-  return { data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }, sha: null }
-}
-
-async function writeData(token, data, sha) {
-  const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')
-  const body = { message: '自动记录点击数据', content }
-  if (sha) body.sha = sha
+async function getSha(token) {
   const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-    method: 'PUT',
-    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
   })
-  return res.ok
+  if (res.ok) return (await res.json()).sha
+  return null
+}
+
+async function writeWithRetry(token, data, sha, record, maxRetries = 3) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')
+    const body = { message: '自动记录点击数据', content }
+    if (sha) body.sha = sha
+
+    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+    if (res.ok) return true
+    if (res.status === 409 && attempt < maxRetries - 1) {
+      const fresh = await readRaw(token)
+      sha = await getSha(token)
+      data = fresh
+      if (!data.clicks) data.clicks = []
+      if (!data.visits) data.visits = []
+      if (record.type === 'visit') {
+        const today = new Date().toISOString().slice(0, 10)
+        const alreadyToday = data.visits.some(v => v.visitor === record.visitor && v.ip === record.ip && v.time && v.time.slice(0, 10) === today)
+        if (!alreadyToday) data.visits.push(record)
+      } else {
+        data.clicks.push(record)
+        if (data.clicks.length > 500) data.clicks = data.clicks.slice(-500)
+      }
+      data.lastSync = new Date().toISOString()
+      continue
+    }
+    return false
+  }
+  return false
 }
 
 export default async function handler(req, res) {
@@ -81,7 +90,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { data: siteData, sha } = await readData(token)
+    const [siteData, sha] = await Promise.all([readRaw(token), getSha(token)])
     if (!siteData.clicks) siteData.clicks = []
     if (!siteData.visits) siteData.visits = []
     if (record.type === 'visit') {
@@ -93,7 +102,7 @@ export default async function handler(req, res) {
       if (siteData.clicks.length > 500) siteData.clicks = siteData.clicks.slice(-500)
     }
     siteData.lastSync = new Date().toISOString()
-    const ok = await writeData(token, siteData, sha)
+    const ok = await writeWithRetry(token, siteData, sha, record)
     if (ok) return res.status(200).json({ success: true, message: '已记录并同步' })
     return res.status(200).json({ success: true, message: '已记录' })
   } catch (e) {

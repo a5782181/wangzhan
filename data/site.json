@@ -857,6 +857,16 @@
       "ip": "45.67.201.99",
       "country": "未知",
       "city": ""
+    },
+    {
+      "time": "2026-06-12T15:05:40.064Z",
+      "plan": "完整菜谱PDF",
+      "price": "¥135.73",
+      "recipe": "锅包肉",
+      "visitor": "v_1781276740067",
+      "ip": "206.237.119.235",
+      "country": "unknown",
+      "city": "unknown"
     }
   ],
   "visits": [
@@ -871,5 +881,5 @@
       "page": "/wangzhan/index.html"
     }
   ],
-  "lastSync": "2026-06-12T14:47:01.985Z"
+  "lastSync": "2026-06-12T15:05:40.434Z"
 }

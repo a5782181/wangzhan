@@ -889,8 +889,21 @@
       "price": "9.99",
       "recipe": "????",
       "page": "/"
+    },
+    {
+      "time": "2026-06-12T17:34:27.456Z",
+      "type": "click",
+      "visitor": "v_blob_test",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "plan": "test-GitBlob",
+      "price": "1",
+      "recipe": "test",
+      "page": "/"
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T17:31:36.080Z"
+  "lastSync": "2026-06-12T17:34:28.047Z"
 }

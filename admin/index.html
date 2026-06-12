@@ -754,43 +754,12 @@ function syncBuiltInRecipes() {
   saveArticles([...merged, ...customOnly])
 }
 
-try { syncBuiltInRecipes() } catch(e) {}
-
 const ADMIN_USER = 'admin'
 const ADMIN_PASS = 'dsw315210**'
 const LOGIN_EXPIRE_DAYS = 3
 const REMEMBER_EXPIRE_DAYS = 30
 const GITHUB_REPO = 'a5782181/wangzhan'
 
-function loadFromGithub() {
-  fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json?t=' + Date.now())
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      if (data) {
-        if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
-        if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
-        if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
-      }
-    })
-    .catch(() => {})
-}
-
-function checkLogin() {
-  loadFromGithub()
-  const session = JSON.parse(localStorage.getItem('adminSession') || 'null')
-  if (session && Date.now() < session.expire) {
-    showAdmin()
-    loadStats()
-    return
-  }
-  const saved = JSON.parse(localStorage.getItem('adminSaved') || 'null')
-  if (saved && saved.expire && Date.now() < saved.expire) {
-    document.getElementById('loginUser').value = saved.user
-    document.getElementById('loginPass').value = saved.pass
-    document.getElementById('loginRemember').checked = true
-  }
-  showLogin()
-}
 function showLogin() {
   document.getElementById('loginOverlay').classList.add('on')
 }
@@ -800,15 +769,15 @@ function showAdmin() {
 }
 
 function doLogin() {
-  const user = document.getElementById('loginUser').value.trim()
-  const pass = document.getElementById('loginPass').value
-  const errEl = document.getElementById('loginError')
+  var user = document.getElementById('loginUser').value.trim()
+  var pass = document.getElementById('loginPass').value
+  var errEl = document.getElementById('loginError')
   if (user === ADMIN_USER && pass === ADMIN_PASS) {
     errEl.style.display = 'none'
-    const session = { user: user, expire: Date.now() + LOGIN_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
+    var session = { user: user, expire: Date.now() + LOGIN_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
     localStorage.setItem('adminSession', JSON.stringify(session))
     if (document.getElementById('loginRemember').checked) {
-      const saved = { user: user, pass: pass, expire: Date.now() + REMEMBER_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
+      var saved = { user: user, pass: pass, expire: Date.now() + REMEMBER_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
       localStorage.setItem('adminSaved', JSON.stringify(saved))
     } else {
       localStorage.removeItem('adminSaved')
@@ -827,6 +796,38 @@ function doLogout() {
   localStorage.removeItem('adminSession')
   location.reload()
 }
+
+function loadFromGithub() {
+  fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json?t=' + Date.now())
+    .then(function(r) { return r.ok ? r.json() : null })
+    .then(function(data) {
+      if (data) {
+        if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
+        if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
+        if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
+      }
+    })
+    .catch(function() {})
+}
+
+function checkLogin() {
+  loadFromGithub()
+  var session = JSON.parse(localStorage.getItem('adminSession') || 'null')
+  if (session && Date.now() < session.expire) {
+    showAdmin()
+    try { loadStats() } catch(e) {}
+    return
+  }
+  var saved = JSON.parse(localStorage.getItem('adminSaved') || 'null')
+  if (saved && saved.expire && Date.now() < saved.expire) {
+    document.getElementById('loginUser').value = saved.user
+    document.getElementById('loginPass').value = saved.pass
+    document.getElementById('loginRemember').checked = true
+  }
+  showLogin()
+}
+
+try { syncBuiltInRecipes() } catch(e) {}
 
 function loadTransStatus() {
   const saved = JSON.parse(localStorage.getItem('transKeys') || 'null')

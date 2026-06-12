@@ -29,7 +29,7 @@
         "加入白糖、白醋、番茄酱炒匀",
         "下炸好的肉片快速翻炒均匀即可"
       ],
-      "paid": false,
+      "paid": true,
       "createdAt": "2026-06-11T00:00:00Z",
       "name_en": "Breaded Meat in a Pot",
       "name_ja": "鍋焼き肉",
@@ -860,5 +860,5 @@
       "page": "/wangzhan/index.html"
     }
   ],
-  "lastSync": "2026-06-12T13:33:18.304Z"
+  "lastSync": "2026-06-12T13:33:25.695Z"
 }

@@ -27,13 +27,10 @@ const dl=v=>v==='低'?t('diff_easy'):v==='中'?t('diff_mid'):t('diff_hard')
 let _cloudData=null
 async function loadCloudData(){
   if(_cloudData)return _cloudData
-  const config=JSON.parse(localStorage.getItem('cloudConfig')||'null')
-  if(!config||!config.binId)return null
   try{
-    const res=await fetch(`https://api.jsonbin.io/v3/bins/${config.binId}`)
+    const res=await fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json')
     if(res.ok){
-      const result=await res.json()
-      _cloudData=result.record
+      _cloudData=await res.json()
       if(_cloudData.articles)localStorage.setItem('articles',JSON.stringify(_cloudData.articles))
       if(_cloudData.plans)localStorage.setItem('plans',JSON.stringify(_cloudData.plans))
       if(_cloudData.heroSlides)localStorage.setItem('heroSlides',JSON.stringify(_cloudData.heroSlides))

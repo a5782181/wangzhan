@@ -847,7 +847,19 @@
       "tag_tw": ""
     }
   ],
-  "clicks": [],
+  "clicks": [
+    {
+      "time": "2026-06-12T16:14:46.222Z",
+      "plan": "完整菜谱PDF",
+      "price": "$19.99",
+      "recipe": "锅包肉",
+      "visitor": "v_1781280886226",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK"
+    }
+  ],
   "visits": [],
-  "lastSync": "2026-06-12T16:14:59.640Z"
+  "lastSync": "2026-06-12T16:16:04.164Z"
 }

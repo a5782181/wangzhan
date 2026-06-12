@@ -848,17 +848,6 @@
     }
   ],
   "clicks": [],
-  "visits": [
-    {
-      "time": "2026-06-12T16:11:48.002Z",
-      "type": "visit",
-      "visitor": "v_1781275702223_0s5g24",
-      "ip": "unknown",
-      "country": "unknown",
-      "city": "unknown",
-      "cc": "",
-      "page": "/index.html"
-    }
-  ],
-  "lastSync": "2026-06-12T16:12:09.348Z"
+  "visits": [],
+  "lastSync": "2026-06-12T16:13:05.273Z"
 }

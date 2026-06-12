@@ -865,19 +865,19 @@
   ],
   "clicks": [
     {
-      "time": "2026-06-12T17:22:42.074Z",
+      "time": "2026-06-12T17:22:46.961Z",
       "type": "click",
-      "visitor": "v_test_470433883",
+      "visitor": "v_test_1911136219",
       "ip": "206.237.119.235",
       "country": "Hong Kong",
       "city": "",
       "countryCode": "HK",
-      "plan": "????PDF",
-      "price": "19.99",
+      "plan": "????",
+      "price": "39.99",
       "recipe": "???",
       "page": "/"
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T17:22:42.383Z"
+  "lastSync": "2026-06-12T17:22:47.109Z"
 }

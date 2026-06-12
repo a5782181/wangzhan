@@ -350,15 +350,10 @@ async function translateDetailContent(id,a){
 async function recordVisit(){
   const visitor=localStorage.getItem('vid')||('v_'+Date.now()+'_'+Math.random().toString(36).slice(2,8))
   localStorage.setItem('vid',visitor)
-  const visit={time:new Date().toISOString(),type:'visit',visitor,page:location.pathname}
   const visits=JSON.parse(localStorage.getItem('visits')||'[]')
-  const today=new Date().toISOString().slice(0,10)
-  const alreadyToday=visits.some(v=>v.visitor===visitor&&v.time&&v.time.slice(0,10)===today)
-  if(!alreadyToday){
-    visits.push(visit)
-    localStorage.setItem('visits',JSON.stringify(visits))
-    try{await fetch(API+'/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'visit',visitor,page:location.pathname})})}catch(e){}
-  }
+  visits.push({time:new Date().toISOString(),type:'visit',visitor,page:location.pathname})
+  localStorage.setItem('visits',JSON.stringify(visits))
+  try{await fetch(API+'/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'visit',visitor,page:location.pathname})})}catch(e){}
 }
 
 window.onload=async()=>{

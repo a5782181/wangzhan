@@ -91,7 +91,7 @@ export default async function handler(req, res) {
     if (!siteData.visits) siteData.visits = []
     if (record.type === 'visit') {
       const today = new Date().toISOString().slice(0, 10)
-      const alreadyToday = siteData.visits.some(v => v.visitor === record.visitor && v.time && v.time.slice(0, 10) === today)
+      const alreadyToday = siteData.visits.some(v => v.visitor === record.visitor && v.ip === record.ip && v.time && v.time.slice(0, 10) === today)
       if (!alreadyToday) siteData.visits.push(record)
     } else {
       siteData.clicks.push(record)

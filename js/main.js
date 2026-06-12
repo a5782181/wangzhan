@@ -180,10 +180,14 @@ function setupHero(){
   const customSlides=getHeroSlides()
   const heroEl=document.querySelector('.hero')
   if(!heroEl)return
+  const lang=getLang()
   if(customSlides.length>0){
     const slidesHtml=customSlides.map((s,i)=>{
       const clickAction=s.linkId?`onclick="showDetail('${s.linkId}')"`:''
-      return`<div class="hero-slide${i===0?' active':''}" ${clickAction} style="cursor:${s.linkId?'pointer':'default'}"><div class="hero-slide-bg" style="background:${s.img?`url(${s.img}) center/cover`:`linear-gradient(135deg,${s.c1||'#1a1a2e'},${s.c2||'#16213e'})`}"></div><div class="hero-slide-overlay"></div><div class="hero-content"><span class="hero-tag">${s.tag||'精选'}</span><div class="hero-title">${s.title||''}</div><div class="hero-desc">${s.desc||''}</div><a href="#hot" class="hero-btn">立即查看</a></div></div>`
+      const tag=(lang!=='zh'&&s['tag_'+lang])||s.tag||t('hero_tag')
+      const title=(lang!=='zh'&&s['title_'+lang])||s.title||''
+      const desc=(lang!=='zh'&&s['desc_'+lang])||s.desc||''
+      return`<div class="hero-slide${i===0?' active':''}" ${clickAction} style="cursor:${s.linkId?'pointer':'default'}"><div class="hero-slide-bg" style="background:${s.img?`url(${s.img}) center/cover`:`linear-gradient(135deg,${s.c1||'#1a1a2e'},${s.c2||'#16213e'})`}"></div><div class="hero-slide-overlay"></div><div class="hero-content"><span class="hero-tag">${tag}</span><div class="hero-title">${title}</div><div class="hero-desc">${desc}</div><a href="#hot" class="hero-btn">${t('hero_btn')}</a></div></div>`
     }).join('')
     const dotsHtml=customSlides.map((_,i)=>`<span class="hero-dot${i===0?' active':''}" data-i="${i}"></span>`).join('')
     heroEl.innerHTML=slidesHtml+`<div class="hero-dots">${dotsHtml}</div>`

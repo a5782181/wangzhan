@@ -906,6 +906,17 @@
       "page": "/test"
     }
   ],
-  "visits": [],
-  "lastSync": "2026-06-12T16:53:58.659Z"
+  "visits": [
+    {
+      "time": "2026-06-12T17:01:20.678Z",
+      "type": "visit",
+      "visitor": "v_1781275702223_0s5g24",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "page": "/"
+    }
+  ],
+  "lastSync": "2026-06-12T17:01:20.930Z"
 }

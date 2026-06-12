@@ -7,7 +7,6 @@
       "diff": "中",
       "time": "40分钟",
       "desc": "东北硬菜代表，外酥里嫩，酸甜适口。",
-      "img": "../images/recipes/guobaorou.jpg",
       "ingredients": [
         "猪里脊肉 300g",
         "土豆淀粉 150g",
@@ -29,24 +28,101 @@
         "加入白糖、白醋、番茄酱炒匀",
         "下炸好的肉片快速翻炒均匀即可"
       ],
+      "img": "../images/recipes/guobaorou.jpg",
       "paid": false,
       "createdAt": "2026-06-11T00:00:00Z",
-      "name_en": "",
-      "name_ja": "",
-      "name_ko": "",
-      "name_tw": "",
-      "desc_en": "",
-      "desc_ja": "",
-      "desc_ko": "",
-      "desc_tw": "",
-      "ingredients_en": [],
-      "ingredients_ja": [],
-      "ingredients_ko": [],
-      "ingredients_tw": [],
-      "steps_en": [],
-      "steps_ja": [],
-      "steps_ko": [],
-      "steps_tw": []
+      "name_en": "Breaded Meat in a Pot",
+      "name_ja": "鍋焼き肉",
+      "name_ko": "냄비에 빵가루 입힌 고기",
+      "name_tw": "鍋包肉",
+      "desc_en": "Northeast hard dish representative, crispy and tender, sweet and sour.",
+      "desc_ja": "北東のハードディッシュを代表する、サクサクで柔らかく、甘酸っぱい。",
+      "desc_ko": "동북 하드 디쉬 대표, 바삭하고 부드러우며 새콤달콤합니다.",
+      "desc_tw": "東北硬菜代表，外酥裡嫩，酸甜適口。",
+      "ingredients_en": [
+        "300g pork loin",
+        "Potato starch 150g",
+        "3 tablespoons sugar",
+        "2 tablespoons white vinegar",
+        "1 tbsp ketchup",
+        "Moderate amount of shredded carrots",
+        "Appropriate amount of shallot, ginger and silk",
+        "A little salt",
+        "1 tablespoon cooking wine"
+      ],
+      "ingredients_ja": [
+        "豚ロース肉300 g",
+        "ジャガイモデンプン150 g",
+        "砂糖大さじ3",
+        "白酢大さじ2",
+        "ケチャップ大さじ1",
+        "ニンジンの細切りの適度な量",
+        "適量のシャロット、ジンジャー、シルク",
+        "塩少々",
+        "調理用ワイン大さじ1杯"
+      ],
+      "ingredients_ko": [
+        "돼지고기 등심 300g",
+        "감자전분 150g",
+        "설탕 3큰술",
+        "흰 식초 2큰술",
+        "케첩 1스푼",
+        "적당량의 잘게 썬 당근",
+        "샬롯, 생강, 실크 적당량",
+        "소금 약간",
+        "쿠킹 와인 1큰술"
+      ],
+      "ingredients_tw": [
+        "豬裡肌肉300g",
+        "土豆澱粉150g",
+        "白糖3大匙",
+        "白醋2大匙",
+        "番茄醬1大匙",
+        "胡蘿蔔絲適量",
+        "蔥薑絲適量",
+        "鹽少許",
+        "料酒1大匙"
+      ],
+      "steps_en": [
+        "Cut the spine into 3mm thick slices, pat loose with the back of the knife, and marinate for 15 minutes with salt and cooking wine.",
+        "Add the potato starch and water to make a paste. Leave it for 30 minutes and drain the top layer of water.",
+        "The marinated slices of meat are evenly wrapped in starch paste",
+        "Oil temperature is 60% hot, fry the meat slices until golden yellow is fished out",
+        "Oil temperature rises to 80% hot, re-fry for 30 seconds to crisp",
+        "Leave the base oil in the pan, and let the scallion ginger and carrot shreds burst.",
+        "Stir in sugar, vinegar and tomato sauce",
+        "Stir-fry the fried meat slices quickly and evenly"
+      ],
+      "steps_ja": [
+        "背骨を3 mm厚のスライスに切り、ナイフの後ろで軽くたたき、塩と調理用ワインで15分間マリネします。",
+        "じゃがいもでんぷんと水を加えてペーストを作ります。30分間放置し、上層の水を抜きます。",
+        "肉のマリネはデンプンペーストで均一に包まれています",
+        "油の温度は60 ％で、黄金色になるまで肉のスライスを揚げます",
+        "オイル温度が80 ％に上昇し、30秒間揚げ直してぱりっとします",
+        "ベースオイルをフライパンに入れたまま、ねぎのしょうがとにんじんの細切りをはがします。",
+        "砂糖、酢、トマトソースを混ぜる",
+        "揚げた肉のスライスをすばやく均等に炒める"
+      ],
+      "steps_ko": [
+        "척추를 3mm 두께로 자르고 칼 뒤쪽으로 두드리며 소금과 요리용 와인으로 15분 동안 양념합니다.",
+        "감자전분과 물을 넣어 페이스트를 만든다. 30분간 방치한 후 윗층의 물을 뺀다.",
+        "양념한 고기 조각을 녹말 페이스트에 골고루 싸서",
+        "기름 온도가 60% 뜨겁습니다. 황금 노랑이 낚일 때까지 고기 조각을 튀깁니다.",
+        "오일 온도가 80% 로 올라간 후 30초 동안 다시 튀겨 신선하게 바릅니다.",
+        "팬에 베이스 오일을 두고 스캘리온 생강과 당근 조각을 터뜨립니다.",
+        "설탕, 식초, 토마토 소스를 넣고 저어줍니다.",
+        "튀긴 고기 조각을 빠르고 고르게 볶아줍니다."
+      ],
+      "steps_tw": [
+        "裡肌肉切成3mm厚片，用刀背拍鬆，加鹽、料酒醃製15分鐘",
+        "馬鈴薯澱粉加水調成糊，靜置30分鐘後倒掉上層清水",
+        "醃好的肉片均勻裹上澱粉糊",
+        "油溫六成熱，下肉片炸至金黃撈出",
+        "油溫升至八成熱，復炸30秒至酥脆",
+        "鍋中留底油，下蔥薑絲、胡蘿蔔絲爆香",
+        "加入白糖、白醋、番茄醬炒勻",
+        "下炸好的肉片快速翻炒均勻即可"
+      ]
     },
     {
       "id": "sichuan-huiguorou",
@@ -649,5 +725,5 @@
     }
   ],
   "heroSlides": [],
-  "lastSync": "2026-06-12T11:41:26.307Z"
+  "lastSync": "2026-06-12T11:41:52.115Z"
 }

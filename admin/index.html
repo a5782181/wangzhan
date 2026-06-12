@@ -747,9 +747,9 @@ function handleHeroFile(i, input) {
   const file = input.files[0]
   if (!file) return
   const reader = new FileReader()
-  reader.onload = function(e) {
+  reader.onload = async function(e) {
     var img = new Image()
-    img.onload = function() {
+    img.onload = async function() {
       var canvas = document.createElement('canvas')
       var maxW = 800
       var w = img.width > maxW ? maxW : img.width
@@ -759,8 +759,24 @@ function handleHeroFile(i, input) {
       var ctx = canvas.getContext('2d')
       ctx.drawImage(img, 0, 0, w, h)
       var compressed = canvas.toDataURL('image/jpeg', 0.7)
+
+      var filename = 'hero_' + Date.now() + '.jpg'
       var slides = getHeroSlides()
-      slides[i].img = compressed
+      try {
+        var resp = await fetch(API_BASE + '/admin/upload-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: compressed, filename })
+        })
+        var result = await resp.json()
+        if (result.success) {
+          slides[i].img = result.url + '?t=' + Date.now()
+        } else {
+          slides[i].img = compressed
+        }
+      } catch(e) {
+        slides[i].img = compressed
+      }
       saveHeroSlides(slides)
       loadHeroSlides()
     }

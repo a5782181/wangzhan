@@ -303,17 +303,11 @@ async function confirmPay(plan,price,name,articleId){
   document.getElementById('payModal').remove()
   const visitor=localStorage.getItem('vid')||('v_'+Date.now()+'_'+Math.random().toString(36).slice(2,8))
   localStorage.setItem('vid',visitor)
-  let ipInfo={ip:'unknown',country:'unknown',city:'unknown'}
-  try{
-    const ipRes=await fetch('https://ipapi.co/json/')
-    const ipData=await ipRes.json()
-    ipInfo={ip:ipData.ip||'unknown',country:ipData.country_name||'unknown',city:ipData.city||'unknown',cc:ipData.country_code||''}
-  }catch(e){}
-  const click={time:new Date().toISOString(),plan,price,recipe:name,visitor,...ipInfo}
+  const click={time:new Date().toISOString(),plan,price,recipe:name,visitor}
   const clicks=JSON.parse(localStorage.getItem('clicks')||'[]')
   clicks.push(click)
   localStorage.setItem('clicks',JSON.stringify(clicks))
-  try{await fetch(`${API}/track`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan,price,recipeName:name,page:location.pathname,...ipInfo})})}catch(e){}
+  try{await fetch(`${API}/track`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan,price,recipeName:name,page:location.pathname})})}catch(e){}
   if(articleId)unlockArticle(articleId)
   const thankModal=document.createElement('div')
   thankModal.className='modal on'
@@ -356,13 +350,7 @@ async function translateDetailContent(id,a){
 async function recordVisit(){
   const visitor=localStorage.getItem('vid')||('v_'+Date.now()+'_'+Math.random().toString(36).slice(2,8))
   localStorage.setItem('vid',visitor)
-  let ipInfo={ip:'unknown',country:'unknown',city:'unknown',cc:''}
-  try{
-    const ipRes=await fetch('https://ipapi.co/json/')
-    const ipData=await ipRes.json()
-    ipInfo={ip:ipData.ip||'unknown',country:ipData.country_name||'unknown',city:ipData.city||'unknown',cc:ipData.country_code||''}
-  }catch(e){}
-  const visit={time:new Date().toISOString(),type:'visit',visitor,...ipInfo,page:location.pathname}
+  const visit={time:new Date().toISOString(),type:'visit',visitor,page:location.pathname}
   const visits=JSON.parse(localStorage.getItem('visits')||'[]')
   const today=new Date().toISOString().slice(0,10)
   const alreadyToday=visits.some(v=>v.visitor===visitor&&v.time&&v.time.slice(0,10)===today)

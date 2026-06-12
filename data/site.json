@@ -7,6 +7,7 @@
       "diff": "中",
       "time": "40分钟",
       "desc": "东北硬菜代表，外酥里嫩，酸甜适口。",
+      "img": "../images/recipes/guobaorou.jpg",
       "ingredients": [
         "猪里脊肉 300g",
         "土豆淀粉 150g",
@@ -28,7 +29,6 @@
         "加入白糖、白醋、番茄酱炒匀",
         "下炸好的肉片快速翻炒均匀即可"
       ],
-      "img": "../images/recipes/guobaorou.jpg",
       "paid": false,
       "createdAt": "2026-06-11T00:00:00Z",
       "name_en": "Breaded Meat in a Pot",
@@ -131,6 +131,7 @@
       "diff": "低",
       "time": "30分钟",
       "desc": "四川家常菜第一名，肥而不腻，配饭神器。",
+      "img": "../images/recipes/huiguorou.jpg",
       "ingredients": [
         "五花肉 300g",
         "蒜苗 3根",
@@ -150,7 +151,6 @@
         "加入豆豉、蒜白翻炒",
         "加入生抽、白糖调味，最后下蒜叶翻炒几下即可"
       ],
-      "img": "../images/recipes/huiguorou.jpg",
       "paid": true,
       "createdAt": "2026-06-11T00:00:00Z",
       "name_en": "Twice cooked pork",
@@ -809,5 +809,5 @@
     }
   ],
   "heroSlides": [],
-  "lastSync": "2026-06-12T11:43:11.180Z"
+  "lastSync": "2026-06-12T11:48:02.517Z"
 }

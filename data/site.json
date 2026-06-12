@@ -799,7 +799,7 @@
       "key": "赞助支持",
       "name": "☕ 赞助支持",
       "price": "9.99",
-      "enabled": true
+      "enabled": false
     },
     {
       "key": "一对一带做",
@@ -809,5 +809,5 @@
     }
   ],
   "heroSlides": [],
-  "lastSync": "2026-06-12T11:48:39.520Z"
+  "lastSync": "2026-06-12T11:48:43.714Z"
 }

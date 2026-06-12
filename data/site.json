@@ -826,6 +826,17 @@
   ],
   "heroSlides": [],
   "clicks": [],
-  "visits": [],
-  "lastSync": "2026-06-12T12:30:43.195Z"
+  "visits": [
+    {
+      "time": "2026-06-12T12:30:48.698Z",
+      "type": "visit",
+      "visitor": "v_1781267448485_srj3s1",
+      "ip": "unknown",
+      "country": "unknown",
+      "city": "unknown",
+      "cc": "",
+      "page": "/wangzhan/index.html"
+    }
+  ],
+  "lastSync": "2026-06-12T12:31:15.797Z"
 }

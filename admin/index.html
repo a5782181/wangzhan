@@ -1144,6 +1144,12 @@ async function syncToGithub() {
 }
 
 checkLogin()
+setInterval(function(){
+  var cfg=JSON.parse(localStorage.getItem('githubConfig')||'null')
+  if(!cfg||!cfg.token)return
+  loadFromGithub()
+  setTimeout(function(){try{loadStats()}catch(e){}},1500)
+},30000)
 </script>
 </body>
 </html>

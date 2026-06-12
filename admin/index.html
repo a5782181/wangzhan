@@ -760,8 +760,24 @@ const ADMIN_USER = 'admin'
 const ADMIN_PASS = 'dsw315210**'
 const LOGIN_EXPIRE_DAYS = 3
 const REMEMBER_EXPIRE_DAYS = 30
+const GITHUB_REPO = 'a5782181/wangzhan'
 
-function checkLogin() {
+async function loadFromGithub() {
+  try {
+    const res = await fetch('https://raw.githubusercontent.com/' + GITHUB_REPO + '/main/data/site.json?t=' + Date.now())
+    if (res.ok) {
+      const data = await res.json()
+      if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
+      if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
+      if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
+      return data
+    }
+  } catch (e) {}
+  return null
+}
+
+async function checkLogin() {
+  await loadFromGithub()
   const session = JSON.parse(localStorage.getItem('adminSession') || 'null')
   if (session && Date.now() < session.expire) {
     showAdmin()

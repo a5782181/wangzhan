@@ -160,6 +160,7 @@ tr:hover td { background: #fafafa; }
     <button onclick="switchTab('articles',this)">文章管理</button>
     <button onclick="switchTab('prices',this)">套餐管理</button>
     <button onclick="switchTab('hero',this)">头图管理</button>
+    <button onclick="switchTab('translate',this)">翻译设置</button>
   </div>
 
   <div id="tab-stats">
@@ -234,6 +235,44 @@ tr:hover td { background: #fafafa; }
       <div class="hero-slides" id="heroSlides"></div>
     </div>
   </div>
+
+  <div id="tab-translate" style="display:none">
+    <div class="card">
+      <div class="card-title">翻译 API 设置</div>
+      <p style="font-size:13px;color:#888;margin-bottom:16px">配置自定义翻译 API Key 以获得更好的翻译质量。留空则使用默认免费翻译（MyMemory）。</p>
+      
+      <div class="form-group">
+        <label>腾讯云 SecretId</label>
+        <input type="text" id="tencentSecretId" placeholder="留空使用免费翻译">
+      </div>
+      <div class="form-group">
+        <label>腾讯云 SecretKey</label>
+        <input type="password" id="tencentSecretKey" placeholder="留空使用免费翻译">
+      </div>
+      
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn btn-primary" onclick="saveTransKeys()">保存配置</button>
+        <button class="btn btn-danger" onclick="clearTransKeys()">清除配置</button>
+      </div>
+      
+      <div id="transStatus" style="margin-top:12px;font-size:13px;display:none"></div>
+      
+      <div style="margin-top:20px;padding:16px;background:#f6ffed;border-radius:8px;border:1px solid #b7eb8f">
+        <div style="font-size:14px;font-weight:600;color:#52c41a;margin-bottom:8px">当前状态</div>
+        <div id="transCurrentStatus" style="font-size:13px;color:#666"></div>
+      </div>
+      
+      <div style="margin-top:16px;padding:16px;background:#f0f5ff;border-radius:8px;border:1px solid #91d5ff">
+        <div style="font-size:14px;font-weight:600;color:#1890ff;margin-bottom:8px">说明</div>
+        <ul style="font-size:12px;color:#666;line-height:1.8;margin:0;padding-left:16px">
+          <li>配置腾讯云 API Key 后，菜谱和套餐名称将自动翻译为 5 种语言</li>
+          <li>免费翻译（MyMemory）有每日调用限制，适合小规模使用</li>
+          <li>腾讯云翻译需要实名认证，每月有免费额度</li>
+          <li>清除配置后将恢复使用免费翻译</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="footer">© 2026 中国乡村味道 · 管理后台</div>
 
@@ -250,22 +289,24 @@ const LANGS=['en','ja','ko','tw']
 
 async function translateAPI(text,target){
   if(!text||target==='zh')return text
-  try{
-    const res=await fetch('/api/translate',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text:text.substring(0,500),target})
-    })
-    const data=await res.json()
-    return data.text||text
-  }catch(e){
-    const langMap={en:'en',ja:'ja',ko:'ko',tw:'zh-TW'}
+  const savedKeys=JSON.parse(localStorage.getItem('transKeys')||'null')
+  if(savedKeys&&savedKeys.secretId&&savedKeys.secretKey){
     try{
-      const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.substring(0,500))}&langpair=zh|${langMap[target]||'en'}`
-      const res=await fetch(url)
-      const d=await res.json()
-      return(d.responseStatus===200&&d.responseData.translatedText)?d.responseData.translatedText:text
-    }catch(e2){return text}
+      const res=await fetch('/api/translate',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({text:text.substring(0,500),target,secretId:savedKeys.secretId,secretKey:savedKeys.secretKey})
+      })
+      const data=await res.json()
+      if(data.text)return data.text
+    }catch(e){}
   }
+  const langMap={en:'en',ja:'ja',ko:'ko',tw:'zh-TW'}
+  try{
+    const url=`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text.substring(0,500))}&langpair=zh|${langMap[target]||'en'}`
+    const res=await fetch(url)
+    const d=await res.json()
+    return(d.responseStatus===200&&d.responseData.translatedText)?d.responseData.translatedText:text
+  }catch(e2){return text}
 }
 
 async function translateArticle(article){
@@ -349,12 +390,13 @@ function clearData() { if (confirm('确定清空所有数据？（访问记录+�
 function switchTab(tab, btn) {
   document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'))
   btn.classList.add('active')
-  ;['stats','articles','prices','hero'].forEach(t => {
+  ;['stats','articles','prices','hero','translate'].forEach(t => {
     document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none'
   })
   if (tab === 'articles') loadArticles()
   if (tab === 'prices') loadPrices()
   if (tab === 'hero') loadHeroSlides()
+  if (tab === 'translate') loadTransStatus()
 }
 
 function loadArticles() {
@@ -715,12 +757,65 @@ function doLogout() {
   location.reload()
 }
 
-document.getElementById('loginPass').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') doLogin()
-})
-document.getElementById('loginUser').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') document.getElementById('loginPass').focus()
-})
+function loadTransStatus() {
+  const saved = JSON.parse(localStorage.getItem('transKeys') || 'null')
+  const statusEl = document.getElementById('transCurrentStatus')
+  const idInput = document.getElementById('tencentSecretId')
+  const keyInput = document.getElementById('tencentSecretKey')
+  
+  if (saved && saved.secretId && saved.secretKey) {
+    statusEl.innerHTML = '<span style="color:#52c41a;font-weight:600">已配置腾讯云翻译 API</span><br>SecretId: ' + saved.secretId.substring(0, 10) + '...'
+    idInput.value = saved.secretId
+    keyInput.value = saved.secretKey
+  } else {
+    statusEl.innerHTML = '<span style="color:#faad14;font-weight:600">使用默认免费翻译（MyMemory）</span>'
+    idInput.value = ''
+    keyInput.value = ''
+  }
+}
+
+function saveTransKeys() {
+  const secretId = document.getElementById('tencentSecretId').value.trim()
+  const secretKey = document.getElementById('tencentSecretKey').value.trim()
+  const statusEl = document.getElementById('transStatus')
+  
+  if (!secretId && !secretKey) {
+    localStorage.removeItem('transKeys')
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#faad14'
+    statusEl.textContent = '已切换为免费翻译（MyMemory）'
+    loadTransStatus()
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  if (!secretId || !secretKey) {
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '请同时填写 SecretId 和 SecretKey'
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  localStorage.setItem('transKeys', JSON.stringify({ secretId, secretKey }))
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#52c41a'
+  statusEl.textContent = '配置已保存！'
+  loadTransStatus()
+  setTimeout(() => statusEl.style.display = 'none', 3000)
+}
+
+function clearTransKeys() {
+  localStorage.removeItem('transKeys')
+  document.getElementById('tencentSecretId').value = ''
+  document.getElementById('tencentSecretKey').value = ''
+  const statusEl = document.getElementById('transStatus')
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#faad14'
+  statusEl.textContent = '已清除配置，恢复使用免费翻译'
+  loadTransStatus()
+  setTimeout(() => statusEl.style.display = 'none', 3000)
+}
 
 checkLogin()
 </script>

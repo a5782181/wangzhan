@@ -1,7 +1,5 @@
 const crypto = require('crypto');
 
-const SECRET_ID = process.env.TENCENT_SECRET_ID || '';
-const SECRET_KEY = process.env.TENCENT_SECRET_KEY || '';
 const SERVICE = 'tmt';
 const HOST = 'tmt.tencentcloudapi.com';
 
@@ -18,9 +16,15 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const { text, target } = req.body || {};
+  const { text, target, secretId: reqSecretId, secretKey: reqSecretKey } = req.body || {};
   if (!text || !target) return res.status(400).json({ error: 'Missing text or target' });
-  if (!SECRET_ID || !SECRET_KEY) return res.status(500).json({ error: 'Translation API not configured. Set TENCENT_SECRET_ID and TENCENT_SECRET_KEY in Vercel environment variables.' });
+  
+  const secretId = reqSecretId || process.env.TENCENT_SECRET_ID || '';
+  const secretKey = reqSecretKey || process.env.TENCENT_SECRET_KEY || '';
+  
+  if (!secretId || !secretKey) {
+    return res.status(500).json({ error: 'Translation API not configured.' });
+  }
 
   const timestamp = Math.floor(Date.now() / 1000);
   const date = new Date(timestamp * 1000).toISOString().split('T')[0];
@@ -28,7 +32,7 @@ export default async function handler(req, res) {
 
   const canonicalRequest = `POST\n/\n\ncontent-type:application/json; charset=utf-8\nhost:${HOST}\n\ncontent-type;host\n${crypto.createHash('sha256').update(payload).digest('hex')}`;
   const stringToSign = `TC3-HMAC-SHA256\n${timestamp}\n${date}/${SERVICE}/tc3_request\n${crypto.createHash('sha256').update(canonicalRequest).digest('hex')}`;
-  const signingKey = sign(SECRET_KEY, date, SERVICE);
+  const signingKey = sign(secretKey, date, SERVICE);
   const signature = crypto.createHmac('sha256', signingKey).update(stringToSign).digest('hex');
 
   try {
@@ -36,7 +40,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': `TC3-HMAC-SHA256 Credential=${SECRET_ID}/${date}/${SERVICE}/tc3_request, SignedHeaders=content-type;host, Signature=${signature}`,
+        'Authorization': `TC3-HMAC-SHA256 Credential=${secretId}/${date}/${SERVICE}/tc3_request, SignedHeaders=content-type;host, Signature=${signature}`,
         'X-TC-Action': 'TextTranslate',
         'X-TC-Version': '2018-03-21',
         'X-TC-Timestamp': timestamp.toString(),

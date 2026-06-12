@@ -863,7 +863,21 @@
       "tag_tw": ""
     }
   ],
-  "clicks": [],
+  "clicks": [
+    {
+      "time": "2026-06-12T19:06:57.343Z",
+      "type": "click",
+      "visitor": "v_1781276639871_2dla5a",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "plan": "视频教程",
+      "price": "¥271.53",
+      "recipe": "锅包肉",
+      "page": "/"
+    }
+  ],
   "visits": [
     {
       "time": "2026-06-12T19:03:08.750Z",
@@ -886,5 +900,5 @@
       "page": "/"
     }
   ],
-  "lastSync": "2026-06-12T19:03:56.175Z"
+  "lastSync": "2026-06-12T19:06:57.661Z"
 }

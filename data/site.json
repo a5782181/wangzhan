@@ -609,7 +609,7 @@
   "plans": [
     {
       "key": "完整菜谱PDF",
-      "name": "📖 完整菜谱PDF",
+      "name": "📖 完整菜谱",
       "price": "19.99",
       "enabled": true
     },
@@ -633,5 +633,5 @@
     }
   ],
   "heroSlides": [],
-  "lastSync": "2026-06-12T10:21:02.496Z"
+  "lastSync": "2026-06-12T10:21:07.433Z"
 }

@@ -333,6 +333,24 @@ tr:hover td { background: #fafafa; }
 <div class="footer">© 2026 中国乡村味道 · 管理后台</div>
 
 <script>
+var ADMIN_USER='admin',ADMIN_PASS='dsw315210**';
+function showLogin(){document.getElementById('loginOverlay').classList.add('on')}
+function showAdmin(){document.getElementById('loginOverlay').classList.remove('on')}
+function doLogin(){
+  var u=document.getElementById('loginUser').value.trim();
+  var p=document.getElementById('loginPass').value;
+  var e=document.getElementById('loginError');
+  if(u===ADMIN_USER&&p===ADMIN_PASS){
+    e.style.display='none';
+    localStorage.setItem('adminSession',JSON.stringify({user:u,expire:Date.now()+3*86400000}));
+    if(document.getElementById('loginRemember').checked){localStorage.setItem('adminSaved',JSON.stringify({user:u,pass:p,expire:Date.now()+30*86400000}))}else{localStorage.removeItem('adminSaved')}
+    showAdmin();
+    try{loadStats()}catch(ex){}
+  }else{e.style.display='block';e.textContent='\u8d26\u53f7\u6216\u5bc6\u7801\u9519\u8bef';document.getElementById('loginPass').value='';document.getElementById('loginPass').focus()}
+}
+function doLogout(){localStorage.removeItem('adminSession');location.reload()}
+</script>
+<script>
 const barColors = ['#1890ff', '#52c41a', '#fa8c16', '#f5222d']
 const defaultPlans = [
   { key: '完整菜谱PDF', name: '📖 完整菜谱PDF', price: '19.99', enabled: true },
@@ -752,49 +770,6 @@ function syncBuiltInRecipes() {
   })
   const customOnly = existing.filter(a => !builtIn.find(b => b.id === a.id))
   saveArticles([...merged, ...customOnly])
-}
-
-const ADMIN_USER = 'admin'
-const ADMIN_PASS = 'dsw315210**'
-const LOGIN_EXPIRE_DAYS = 3
-const REMEMBER_EXPIRE_DAYS = 30
-const GITHUB_REPO = 'a5782181/wangzhan'
-
-function showLogin() {
-  document.getElementById('loginOverlay').classList.add('on')
-}
-
-function showAdmin() {
-  document.getElementById('loginOverlay').classList.remove('on')
-}
-
-function doLogin() {
-  var user = document.getElementById('loginUser').value.trim()
-  var pass = document.getElementById('loginPass').value
-  var errEl = document.getElementById('loginError')
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
-    errEl.style.display = 'none'
-    var session = { user: user, expire: Date.now() + LOGIN_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
-    localStorage.setItem('adminSession', JSON.stringify(session))
-    if (document.getElementById('loginRemember').checked) {
-      var saved = { user: user, pass: pass, expire: Date.now() + REMEMBER_EXPIRE_DAYS * 24 * 60 * 60 * 1000 }
-      localStorage.setItem('adminSaved', JSON.stringify(saved))
-    } else {
-      localStorage.removeItem('adminSaved')
-    }
-    showAdmin()
-    try { loadStats() } catch(e) {}
-  } else {
-    errEl.style.display = 'block'
-    errEl.textContent = '账号或密码错误'
-    document.getElementById('loginPass').value = ''
-    document.getElementById('loginPass').focus()
-  }
-}
-
-function doLogout() {
-  localStorage.removeItem('adminSession')
-  location.reload()
 }
 
 function loadFromGithub() {

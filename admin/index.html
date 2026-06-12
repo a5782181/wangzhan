@@ -166,6 +166,10 @@ tr:hover td { background: #fafafa; }
     <button onclick="switchTab('translate',this)">翻译设置</button>
     <button onclick="switchTab('cloud',this)">云端同步</button>
   </div>
+  <div id="githubWarning" style="display:none;background:#fff1f0;border:1px solid #ffa39e;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#cf1322">
+    <strong>⚠️ 未配置 GitHub 同步！</strong>当前数据仅保存在浏览器本地，清除浏览器数据后将丢失所有内容。<br>
+    请先到 <a href="#" onclick="switchTab('cloud',document.querySelectorAll('.tab-bar button')[5]);return false" style="color:#1890ff;font-weight:600">云端同步</a> 配置 GitHub Token，然后点击"立即推送到 GitHub"备份数据。
+  </div>
 
   <div id="tab-stats">
     <div class="stats">
@@ -338,7 +342,7 @@ tr:hover td { background: #fafafa; }
 <script>
 var ADMIN_USER='admin',ADMIN_PASS='dsw315210**';
 function showLogin(){document.getElementById('loginOverlay').classList.add('on')}
-function showAdmin(){document.getElementById('loginOverlay').classList.remove('on')}
+function showAdmin(){document.getElementById('loginOverlay').classList.remove('on');var cfg=JSON.parse(localStorage.getItem('githubConfig')||'null');document.getElementById('githubWarning').style.display=(!cfg||!cfg.token)?'block':'none'}
 function doLogin(){
   var u=document.getElementById('loginUser').value.trim();
   var p=document.getElementById('loginPass').value;
@@ -999,6 +1003,7 @@ function saveGithubConfig() {
     statusEl.style.color = '#faad14'
     statusEl.textContent = '已关闭 GitHub 同步'
     loadGithubStatus()
+    document.getElementById('githubWarning').style.display = 'block'
     setTimeout(() => statusEl.style.display = 'none', 3000)
     return
   }
@@ -1008,6 +1013,7 @@ function saveGithubConfig() {
   statusEl.style.color = '#52c41a'
   statusEl.textContent = '配置已保存！'
   loadGithubStatus()
+  document.getElementById('githubWarning').style.display = 'none'
   setTimeout(() => statusEl.style.display = 'none', 3000)
 }
 
@@ -1019,6 +1025,7 @@ function clearGithubConfig() {
   statusEl.style.color = '#faad14'
   statusEl.textContent = '已清除 GitHub 配置'
   loadGithubStatus()
+  document.getElementById('githubWarning').style.display = 'block'
   setTimeout(() => statusEl.style.display = 'none', 3000)
 }
 

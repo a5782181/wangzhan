@@ -824,29 +824,7 @@
       "name_tw": "👨‍🍳 一對一帶做"
     }
   ],
-  "heroSlides": [
-    {
-      "img": "",
-      "title": "新头图",
-      "desc": "锅包肉、酸菜炖排骨、杀猪菜 豪爽东北味，大口吃肉",
-      "tag": "精选",
-      "c1": "#1a1a2e",
-      "c2": "#16213e",
-      "linkId": "hubei-doupi",
-      "title_en": "New header",
-      "title_ja": "新しいヘッダー",
-      "title_ko": "새 헤더",
-      "title_tw": "新頭圖",
-      "desc_en": "Pan wrapped meat, sauerkraut stewed ribs, pork killer gorgeous northeastern flavor, big tasting meat",
-      "desc_ja": "パン包み肉、ザワークラウトのリブ煮込み、豚肉キラーの豪華な北東風味、おいしい肉",
-      "desc_ko": "팬에 싸인 고기, 사우어크라우트 갈비찜, 돼지고기 킬러의 화려한 북동부 풍미, 커다란 고기 맛보기",
-      "desc_tw": "鍋包肉、酸菜燉排骨、殺豬菜豪爽東北味，大口吃肉",
-      "tag_en": "Features",
-      "tag_ja": "注目",
-      "tag_ko": "특선",
-      "tag_tw": "精選"
-    }
-  ],
+  "heroSlides": [],
   "clicks": [
     {
       "time": "2026-06-12T12:35:13.374Z",
@@ -871,5 +849,5 @@
       "page": "/wangzhan/index.html"
     }
   ],
-  "lastSync": "2026-06-12T12:38:10.791Z"
+  "lastSync": "2026-06-12T12:38:23.508Z"
 }

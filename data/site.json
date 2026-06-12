@@ -878,19 +878,19 @@
       "page": "/"
     },
     {
-      "time": "2026-06-12T17:31:26.344Z",
+      "time": "2026-06-12T17:31:31.030Z",
       "type": "click",
-      "visitor": "v_user_1980425531",
+      "visitor": "v_user_1342017397",
       "ip": "206.237.119.235",
       "country": "Hong Kong",
       "city": "",
       "countryCode": "HK",
-      "plan": "????PDF",
-      "price": "19.99",
+      "plan": "????",
+      "price": "39.99",
       "recipe": "???",
       "page": "/"
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T17:31:26.521Z"
+  "lastSync": "2026-06-12T17:31:31.216Z"
 }

@@ -412,9 +412,14 @@ async function translateArticle(article){
 function getClicks() { return JSON.parse(localStorage.getItem('clicks') || '[]') }
 function getVisits() { return JSON.parse(localStorage.getItem('visits') || '[]') }
 function getArticles() { return JSON.parse(localStorage.getItem('articles') || '[]') }
-function saveArticles(d) { localStorage.setItem('articles', JSON.stringify(d)); pushToGithub() }
+var _pushTimer = null
+function debouncedPush() {
+  if (_pushTimer) clearTimeout(_pushTimer)
+  _pushTimer = setTimeout(function() { pushToGithub() }, 3000)
+}
+function saveArticles(d) { localStorage.setItem('articles', JSON.stringify(d)); debouncedPush() }
 function getPlans() { return JSON.parse(localStorage.getItem('plans') || JSON.stringify(defaultPlans)) }
-function savePlans(d) { localStorage.setItem('plans', JSON.stringify(d)); pushToGithub() }
+function savePlans(d) { localStorage.setItem('plans', JSON.stringify(d)); debouncedPush() }
 function getHeroSlides() {
   const slides = JSON.parse(localStorage.getItem('heroSlides') || '[]')
   return slides.map(function(s) {
@@ -426,7 +431,7 @@ function getHeroSlides() {
     return s
   })
 }
-function saveHeroSlides(d) { localStorage.setItem('heroSlides', JSON.stringify(d)); pushToGithub() }
+function saveHeroSlides(d) { localStorage.setItem('heroSlides', JSON.stringify(d)); debouncedPush() }
 function planClass(p) { if (p.includes('PDF') || p.includes('完整')) return 'pdf'; if (p.includes('视频')) return 'video'; if (p.includes('赞助') || p.includes('茶')) return 'support'; return 'vip' }
 
 function renderBars(plans) {

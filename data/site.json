@@ -827,16 +827,16 @@
   "heroSlides": [
     {
       "img": "",
-      "title": "新头图",
+      "title": "新疆风味",
       "desc": "描述文字",
       "tag": "精选",
       "c1": "#1a1a2e",
       "c2": "#16213e",
       "linkId": "xibei-dapanji",
-      "title_en": "",
-      "title_ja": "",
-      "title_ko": "",
-      "title_tw": "",
+      "title_en": "Flavors of Xinjiang",
+      "title_ja": "新疆ウイグル自治区の味",
+      "title_ko": "신장의 맛",
+      "title_tw": "新疆風味",
       "desc_en": "",
       "desc_ja": "",
       "desc_ko": "",
@@ -860,5 +860,5 @@
       "page": "/wangzhan/index.html"
     }
   ],
-  "lastSync": "2026-06-12T12:51:37.252Z"
+  "lastSync": "2026-06-12T12:52:12.178Z"
 }

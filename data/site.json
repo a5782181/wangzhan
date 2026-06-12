@@ -863,7 +863,76 @@
       "tag_tw": ""
     }
   ],
-  "clicks": [],
-  "visits": [],
-  "lastSync": "2026-06-12T17:10:07.693Z"
+  "clicks": [
+    {
+      "time": "2026-06-12T16:14:46.222Z",
+      "plan": "完整菜谱PDF",
+      "price": "$19.99",
+      "recipe": "锅包肉",
+      "visitor": "v_1781280886226",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK"
+    },
+    {
+      "time": "2026-06-12T16:16:41.661Z",
+      "plan": "赞助支持",
+      "price": "¥67.83",
+      "recipe": "锅包肉",
+      "visitor": "v_1781281001665",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK"
+    },
+    {
+      "time": "2026-06-12T16:22:39.542Z",
+      "plan": "完整菜谱PDF",
+      "price": "NT$631.88",
+      "recipe": "锅包肉",
+      "visitor": "v_1781281359545",
+      "ip": "203.198.248.153",
+      "country": "Hong Kong",
+      "city": "Shatin",
+      "countryCode": "HK"
+    },
+    {
+      "time": "2026-06-12T16:25:02.945Z",
+      "plan": "test",
+      "price": "�1",
+      "recipe": "??",
+      "visitor": "v_1781281502948",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK"
+    },
+    {
+      "time": "2026-06-12T16:34:38.911Z",
+      "type": "test",
+      "visitor": "v_1781282078914",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "plan": "test",
+      "price": "�0",
+      "recipe": "deploy-test",
+      "page": "/test"
+    }
+  ],
+  "visits": [
+    {
+      "time": "2026-06-12T17:10:15.690Z",
+      "type": "visit",
+      "visitor": "v_1781275702223_0s5g24",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "page": "/index.html"
+    }
+  ],
+  "lastSync": "2026-06-12T17:10:15.991Z"
 }

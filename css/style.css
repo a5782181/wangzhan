@@ -397,4 +397,30 @@ button { font-family: inherit; cursor: pointer; border: none; outline: none; bac
   .det-bd { padding: 20px 16px; }
   .ig { grid-template-columns: 1fr; }
   .w, .hero-wrap, .tabs-wrap, .ft-in, .ft-bt, .det, .ad-hd h1, .ad-st, .ad-tb, .ad-tt { padding-left: 16px; padding-right: 16px; }
+
+  /* Mobile tabs: horizontal scroll */
+  .tabs-wrap { padding-top: 48px; }
+  .tabs {
+    display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; gap: 0; border-bottom: 1px solid #e8e8e8;
+    white-space: nowrap; padding-bottom: 0;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 12px 16px; font-size: 13px; flex-shrink: 0; }
+
+  /* Mobile hot cards: adjust aspect ratio */
+  .hot-card-img { aspect-ratio: 4/3; border-radius: 8px; }
+  .hot-card-name { font-size: 13px; margin-top: 6px; }
+
+  /* Mobile header: center nav */
+  .header-nav { gap: 20px; }
+  .header-nav a { font-size: 13px; }
+  .header-inner { padding: 0 16px; }
+
+  /* Mobile card description: limit to 1 line */
+  .card-bd .ds { -webkit-line-clamp: 1; }
+
+  /* Mobile support cards: stack vertically */
+  .sup { padding: 20px 16px; }
+  .sup-c { flex: 0 0 100%; max-width: 100%; }
 }

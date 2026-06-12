@@ -891,8 +891,21 @@
       "country": "Hong Kong",
       "city": "",
       "countryCode": "HK"
+    },
+    {
+      "time": "2026-06-12T16:34:38.911Z",
+      "type": "test",
+      "visitor": "v_1781282078914",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "plan": "test",
+      "price": "�0",
+      "recipe": "deploy-test",
+      "page": "/test"
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T16:25:03.349Z"
+  "lastSync": "2026-06-12T16:34:39.286Z"
 }

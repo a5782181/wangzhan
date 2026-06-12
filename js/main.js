@@ -25,15 +25,17 @@ const dc=v=>v==='低'?'lv1':v==='中'?'lv2':'lv3'
 const dl=v=>v==='低'?t('diff_easy'):v==='中'?t('diff_mid'):t('diff_hard')
 
 let _cloudData=null
+let _cloudLoaded=false
 async function loadCloudData(){
-  if(_cloudData)return _cloudData
+  if(_cloudLoaded)return _cloudData
+  _cloudLoaded=true
   try{
-    const res=await fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json')
+    const res=await fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json?t='+Date.now())
     if(res.ok){
       _cloudData=await res.json()
-      if(_cloudData.articles)localStorage.setItem('articles',JSON.stringify(_cloudData.articles))
-      if(_cloudData.plans)localStorage.setItem('plans',JSON.stringify(_cloudData.plans))
-      if(_cloudData.heroSlides)localStorage.setItem('heroSlides',JSON.stringify(_cloudData.heroSlides))
+      localStorage.setItem('articles',JSON.stringify(_cloudData.articles||[]))
+      localStorage.setItem('plans',JSON.stringify(_cloudData.plans||[]))
+      localStorage.setItem('heroSlides',JSON.stringify(_cloudData.heroSlides||[]))
       return _cloudData
     }
   }catch(e){}
@@ -368,7 +370,7 @@ async function recordVisit(){
 
 window.onload=async()=>{
   await loadCloudData()
-  recordVisit()
+  await recordVisit()
   initI18n()
   loadHot()
   loadGrid()

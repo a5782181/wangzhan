@@ -307,7 +307,7 @@ async function confirmPay(plan,price,name,articleId){
   const clicks=JSON.parse(localStorage.getItem('clicks')||'[]')
   clicks.push(click)
   localStorage.setItem('clicks',JSON.stringify(clicks))
-  try{await fetch(`${API}/track`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan,price,recipeName:name,page:location.pathname})})}catch(e){}
+  try{await fetch(`${API}/track`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan,price,recipeName:name,page:location.pathname,visitor})})}catch(e){}
   if(articleId)unlockArticle(articleId)
   const thankModal=document.createElement('div')
   thankModal.className='modal on'

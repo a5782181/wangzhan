@@ -24,6 +24,25 @@ const R=[
 const dc=v=>v==='低'?'lv1':v==='中'?'lv2':'lv3'
 const dl=v=>v==='低'?t('diff_easy'):v==='中'?t('diff_mid'):t('diff_hard')
 
+let _cloudData=null
+async function loadCloudData(){
+  if(_cloudData)return _cloudData
+  const config=JSON.parse(localStorage.getItem('cloudConfig')||'null')
+  if(!config||!config.binId)return null
+  try{
+    const res=await fetch(`https://api.jsonbin.io/v3/bins/${config.binId}`)
+    if(res.ok){
+      const result=await res.json()
+      _cloudData=result.record
+      if(_cloudData.articles)localStorage.setItem('articles',JSON.stringify(_cloudData.articles))
+      if(_cloudData.plans)localStorage.setItem('plans',JSON.stringify(_cloudData.plans))
+      if(_cloudData.heroSlides)localStorage.setItem('heroSlides',JSON.stringify(_cloudData.heroSlides))
+      return _cloudData
+    }
+  }catch(e){}
+  return null
+}
+
 function getArticles(){return JSON.parse(localStorage.getItem('articles')||'[]')}
 function getPlans(){return JSON.parse(localStorage.getItem('plans')||'[{"key":"完整菜谱PDF","name":"📖 完整菜谱PDF","price":"19.99","enabled":true},{"key":"视频教程","name":"🎬 视频教程","price":"39.99","enabled":true},{"key":"赞助支持","name":"☕ 赞助支持","price":"9.99","enabled":true},{"key":"一对一带做","name":"👨‍🍳 一对一带做","price":"199","enabled":true}]')}
 function getHeroSlides(){return JSON.parse(localStorage.getItem('heroSlides')||'[]')}
@@ -350,4 +369,13 @@ async function recordVisit(){
   }
 }
 
-window.onload=()=>{recordVisit();initI18n();loadHot();loadGrid();setupTabs();setupHero();applyPrices()}
+window.onload=async()=>{
+  await loadCloudData()
+  recordVisit()
+  initI18n()
+  loadHot()
+  loadGrid()
+  setupTabs()
+  setupHero()
+  applyPrices()
+}

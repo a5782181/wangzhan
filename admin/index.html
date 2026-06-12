@@ -161,6 +161,7 @@ tr:hover td { background: #fafafa; }
     <button onclick="switchTab('prices',this)">套餐管理</button>
     <button onclick="switchTab('hero',this)">头图管理</button>
     <button onclick="switchTab('translate',this)">翻译设置</button>
+    <button onclick="switchTab('cloud',this)">云端同步</button>
   </div>
 
   <div id="tab-stats">
@@ -273,6 +274,66 @@ tr:hover td { background: #fafafa; }
       </div>
     </div>
   </div>
+
+  <div id="tab-cloud" style="display:none">
+    <div class="card">
+      <div class="card-title">云端数据同步</div>
+      <p style="font-size:13px;color:#888;margin-bottom:16px">配置 JSONBin.io 实现多设备数据同步。不同电脑/浏览器的后台修改将自动同步。</p>
+      
+      <div style="padding:16px;background:#fff7e6;border-radius:8px;border:1px solid #ffd591;margin-bottom:16px">
+        <div style="font-size:14px;font-weight:600;color:#fa8c16;margin-bottom:8px">设置步骤</div>
+        <ol style="font-size:12px;color:#666;line-height:1.8;margin:0;padding-left:16px">
+          <li>访问 <a href="https://jsonbin.io" target="_blank" style="color:#1890ff">jsonbin.io</a> 注册免费账号</li>
+          <li>登录后点击 "Create Bin" 创建一个新的 JSON Bin</li>
+          <li>复制 Bin ID（URL 中的 ID）</li>
+          <li>在 "API Keys" 页面获取你的 API Key</li>
+          <li>将 Bin ID 和 API Key 填入下方</li>
+        </ol>
+      </div>
+      
+      <div class="form-group">
+        <label>Bin ID</label>
+        <input type="text" id="cloudBinId" placeholder="例如：65f8a1b2c8e10d3f5a2b3c4d">
+      </div>
+      <div class="form-group">
+        <label>API Key</label>
+        <input type="password" id="cloudApiKey" placeholder="你的 JSONBin.io API Key">
+      </div>
+      
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn btn-primary" onclick="saveCloudConfig()">保存配置</button>
+        <button class="btn btn-danger" onclick="clearCloudConfig()">清除配置</button>
+        <button class="btn btn-gray" onclick="testCloudConnection()">测试连接</button>
+      </div>
+      
+      <div id="cloudStatus" style="margin-top:12px;font-size:13px;display:none"></div>
+      
+      <div style="margin-top:20px;padding:16px;background:#f6ffed;border-radius:8px;border:1px solid #b7eb8f">
+        <div style="font-size:14px;font-weight:600;color:#52c41a;margin-bottom:8px">当前状态</div>
+        <div id="cloudCurrentStatus" style="font-size:13px;color:#666"></div>
+      </div>
+      
+      <div style="margin-top:16px;padding:16px;background:#f0f5ff;border-radius:8px;border:1px solid #91d5ff">
+        <div style="font-size:14px;font-weight:600;color:#1890ff;margin-bottom:8px">手动同步</div>
+        <div style="display:flex;gap:10px;margin-top:8px">
+          <button class="btn btn-primary" onclick="pushToCloud()">推送到云端</button>
+          <button class="btn btn-gray" onclick="pullFromCloud()">从云端拉取</button>
+        </div>
+        <p style="font-size:12px;color:#888;margin-top:8px">推送：将本地数据上传到云端 | 拉取：从云端下载数据到本地</p>
+      </div>
+      
+      <div style="margin-top:16px;padding:16px;background:#fff1f0;border-radius:8px;border:1px solid #ffa39e">
+        <div style="font-size:14px;font-weight:600;color:#f5222d;margin-bottom:8px">说明</div>
+        <ul style="font-size:12px;color:#666;line-height:1.8;margin:0;padding-left:16px">
+          <li>配置后，每次保存数据会自动同步到云端</li>
+          <li>首次使用请点击"推送到云端"初始化数据</li>
+          <li>其他设备只需配置相同的 Bin ID 和 API Key，然后点击"从云端拉取"</li>
+          <li>免费版 JSONBin.io 有 10,000 次/月的请求限制</li>
+          <li>清除配置后数据仍保留在本地，只是不同步到云端</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="footer">© 2026 中国乡村味道 · 管理后台</div>
 
@@ -335,11 +396,11 @@ async function translateArticle(article){
 function getClicks() { return JSON.parse(localStorage.getItem('clicks') || '[]') }
 function getVisits() { return JSON.parse(localStorage.getItem('visits') || '[]') }
 function getArticles() { return JSON.parse(localStorage.getItem('articles') || '[]') }
-function saveArticles(d) { localStorage.setItem('articles', JSON.stringify(d)) }
+function saveArticles(d) { localStorage.setItem('articles', JSON.stringify(d)); syncToCloud() }
 function getPlans() { return JSON.parse(localStorage.getItem('plans') || JSON.stringify(defaultPlans)) }
-function savePlans(d) { localStorage.setItem('plans', JSON.stringify(d)) }
+function savePlans(d) { localStorage.setItem('plans', JSON.stringify(d)); syncToCloud() }
 function getHeroSlides() { return JSON.parse(localStorage.getItem('heroSlides') || '[]') }
-function saveHeroSlides(d) { localStorage.setItem('heroSlides', JSON.stringify(d)) }
+function saveHeroSlides(d) { localStorage.setItem('heroSlides', JSON.stringify(d)); syncToCloud() }
 function planClass(p) { if (p.includes('PDF') || p.includes('完整')) return 'pdf'; if (p.includes('视频')) return 'video'; if (p.includes('赞助') || p.includes('茶')) return 'support'; return 'vip' }
 
 function renderBars(plans) {
@@ -390,13 +451,14 @@ function clearData() { if (confirm('确定清空所有数据？（访问记录+�
 function switchTab(tab, btn) {
   document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'))
   btn.classList.add('active')
-  ;['stats','articles','prices','hero','translate'].forEach(t => {
+  ;['stats','articles','prices','hero','translate','cloud'].forEach(t => {
     document.getElementById('tab-' + t).style.display = t === tab ? '' : 'none'
   })
   if (tab === 'articles') loadArticles()
   if (tab === 'prices') loadPrices()
   if (tab === 'hero') loadHeroSlides()
   if (tab === 'translate') loadTransStatus()
+  if (tab === 'cloud') loadCloudStatus()
 }
 
 function loadArticles() {
@@ -815,6 +877,218 @@ function clearTransKeys() {
   statusEl.textContent = '已清除配置，恢复使用免费翻译'
   loadTransStatus()
   setTimeout(() => statusEl.style.display = 'none', 3000)
+}
+
+// 云端同步功能
+function getCloudConfig() {
+  return JSON.parse(localStorage.getItem('cloudConfig') || 'null')
+}
+
+function loadCloudStatus() {
+  const config = getCloudConfig()
+  const statusEl = document.getElementById('cloudCurrentStatus')
+  const binInput = document.getElementById('cloudBinId')
+  const keyInput = document.getElementById('cloudApiKey')
+  
+  if (config && config.binId && config.apiKey) {
+    statusEl.innerHTML = '<span style="color:#52c41a;font-weight:600">已配置云端同步</span><br>Bin ID: ' + config.binId.substring(0, 10) + '...'
+    binInput.value = config.binId
+    keyInput.value = config.apiKey
+  } else {
+    statusEl.innerHTML = '<span style="color:#faad14;font-weight:600">未配置云端同步（数据仅保存在本地）</span>'
+    binInput.value = ''
+    keyInput.value = ''
+  }
+}
+
+function saveCloudConfig() {
+  const binId = document.getElementById('cloudBinId').value.trim()
+  const apiKey = document.getElementById('cloudApiKey').value.trim()
+  const statusEl = document.getElementById('cloudStatus')
+  
+  if (!binId && !apiKey) {
+    localStorage.removeItem('cloudConfig')
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#faad14'
+    statusEl.textContent = '已关闭云端同步'
+    loadCloudStatus()
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  if (!binId || !apiKey) {
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '请同时填写 Bin ID 和 API Key'
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  localStorage.setItem('cloudConfig', JSON.stringify({ binId, apiKey }))
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#52c41a'
+  statusEl.textContent = '配置已保存！'
+  loadCloudStatus()
+  setTimeout(() => statusEl.style.display = 'none', 3000)
+}
+
+function clearCloudConfig() {
+  localStorage.removeItem('cloudConfig')
+  document.getElementById('cloudBinId').value = ''
+  document.getElementById('cloudApiKey').value = ''
+  const statusEl = document.getElementById('cloudStatus')
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#faad14'
+  statusEl.textContent = '已清除云端配置'
+  loadCloudStatus()
+  setTimeout(() => statusEl.style.display = 'none', 3000)
+}
+
+async function testCloudConnection() {
+  const config = getCloudConfig()
+  const statusEl = document.getElementById('cloudStatus')
+  
+  if (!config || !config.binId || !config.apiKey) {
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '请先保存配置'
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#1890ff'
+  statusEl.textContent = '测试连接中...'
+  
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/bins/${config.binId}`, {
+      headers: { 'X-Master-Key': config.apiKey }
+    })
+    if (res.ok) {
+      statusEl.style.color = '#52c41a'
+      statusEl.textContent = '连接成功！云端数据可正常访问。'
+    } else {
+      statusEl.style.color = '#f5222d'
+      statusEl.textContent = '连接失败：请检查 Bin ID 和 API Key 是否正确。'
+    }
+  } catch (e) {
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '连接失败：网络错误或 API 不可用。'
+  }
+  setTimeout(() => statusEl.style.display = 'none', 5000)
+}
+
+async function pushToCloud() {
+  const config = getCloudConfig()
+  const statusEl = document.getElementById('cloudStatus')
+  
+  if (!config || !config.binId || !config.apiKey) {
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '请先保存配置'
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#1890ff'
+  statusEl.textContent = '正在推送到云端...'
+  
+  const data = {
+    articles: getArticles(),
+    plans: getPlans(),
+    heroSlides: getHeroSlides(),
+    lastSync: new Date().toISOString()
+  }
+  
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/bins/${config.binId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': config.apiKey
+      },
+      body: JSON.stringify(data)
+    })
+    if (res.ok) {
+      statusEl.style.color = '#52c41a'
+      statusEl.textContent = '推送成功！数据已同步到云端。'
+    } else {
+      statusEl.style.color = '#f5222d'
+      statusEl.textContent = '推送失败：' + res.statusText
+    }
+  } catch (e) {
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '推送失败：网络错误'
+  }
+  setTimeout(() => statusEl.style.display = 'none', 5000)
+}
+
+async function pullFromCloud() {
+  const config = getCloudConfig()
+  const statusEl = document.getElementById('cloudStatus')
+  
+  if (!config || !config.binId || !config.apiKey) {
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '请先保存配置'
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+  
+  statusEl.style.display = 'block'
+  statusEl.style.color = '#1890ff'
+  statusEl.textContent = '正在从云端拉取...'
+  
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/bins/${config.binId}`, {
+      headers: { 'X-Master-Key': config.apiKey }
+    })
+    if (res.ok) {
+      const result = await res.json()
+      const data = result.record
+      if (data.articles) saveArticles(data.articles)
+      if (data.plans) savePlans(data.plans)
+      if (data.heroSlides) saveHeroSlides(data.heroSlides)
+      statusEl.style.color = '#52c41a'
+      statusEl.textContent = '拉取成功！数据已更新到本地。最后同步时间：' + (data.lastSync ? new Date(data.lastSync).toLocaleString('zh-CN') : '未知')
+      loadArticles()
+      loadPrices()
+      loadHeroSlides()
+    } else {
+      statusEl.style.color = '#f5222d'
+      statusEl.textContent = '拉取失败：' + res.statusText
+    }
+  } catch (e) {
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '拉取失败：网络错误'
+  }
+  setTimeout(() => statusEl.style.display = 'none', 5000)
+}
+
+async function syncToCloud() {
+  const config = getCloudConfig()
+  if (!config || !config.binId || !config.apiKey) return
+  
+  const data = {
+    articles: getArticles(),
+    plans: getPlans(),
+    heroSlides: getHeroSlides(),
+    lastSync: new Date().toISOString()
+  }
+  
+  try {
+    await fetch(`https://api.jsonbin.io/v3/bins/${config.binId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': config.apiKey
+      },
+      body: JSON.stringify(data)
+    })
+  } catch (e) {
+    console.log('Cloud sync failed:', e)
+  }
 }
 
 checkLogin()

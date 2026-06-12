@@ -754,7 +754,7 @@ function syncBuiltInRecipes() {
   saveArticles([...merged, ...customOnly])
 }
 
-syncBuiltInRecipes()
+try { syncBuiltInRecipes() } catch(e) {}
 
 const ADMIN_USER = 'admin'
 const ADMIN_PASS = 'dsw315210**'
@@ -814,7 +814,7 @@ function doLogin() {
       localStorage.removeItem('adminSaved')
     }
     showAdmin()
-    loadStats()
+    try { loadStats() } catch(e) {}
   } else {
     errEl.style.display = 'block'
     errEl.textContent = '账号或密码错误'

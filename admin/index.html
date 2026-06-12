@@ -762,42 +762,34 @@ const LOGIN_EXPIRE_DAYS = 3
 const REMEMBER_EXPIRE_DAYS = 30
 const GITHUB_REPO = 'a5782181/wangzhan'
 
-async function loadFromGithub() {
-  try {
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), 3000)
-    const res = await fetch('https://raw.githubusercontent.com/' + GITHUB_REPO + '/main/data/site.json?t=' + Date.now(), {
-      signal: controller.signal
+function loadFromGithub() {
+  fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json?t=' + Date.now())
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (data) {
+        if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
+        if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
+        if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
+      }
     })
-    clearTimeout(timeout)
-    if (res.ok) {
-      const data = await res.json()
-      if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
-      if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
-      if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
-      return data
-    }
-  } catch (e) {}
-  return null
+    .catch(() => {})
 }
 
 function checkLogin() {
   loadFromGithub()
-  setTimeout(() => {
-    const session = JSON.parse(localStorage.getItem('adminSession') || 'null')
-    if (session && Date.now() < session.expire) {
-      showAdmin()
-      loadStats()
-      return
-    }
-    const saved = JSON.parse(localStorage.getItem('adminSaved') || 'null')
-    if (saved && saved.expire && Date.now() < saved.expire) {
-      document.getElementById('loginUser').value = saved.user
-      document.getElementById('loginPass').value = saved.pass
-      document.getElementById('loginRemember').checked = true
-    }
-    showLogin()
-  }, 100)
+  const session = JSON.parse(localStorage.getItem('adminSession') || 'null')
+  if (session && Date.now() < session.expire) {
+    showAdmin()
+    loadStats()
+    return
+  }
+  const saved = JSON.parse(localStorage.getItem('adminSaved') || 'null')
+  if (saved && saved.expire && Date.now() < saved.expire) {
+    document.getElementById('loginUser').value = saved.user
+    document.getElementById('loginPass').value = saved.pass
+    document.getElementById('loginRemember').checked = true
+  }
+  showLogin()
 }
 function showLogin() {
   document.getElementById('loginOverlay').classList.add('on')

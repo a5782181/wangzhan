@@ -841,7 +841,17 @@ function loadFromGithub() {
       if (data) {
         if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
         if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
-        if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
+        if (data.heroSlides) {
+          var slides = data.heroSlides.map(function(s) {
+            if (!s.title_en && !s.title_ja) {
+              s.title_en = s.title_en || ''; s.title_ja = s.title_ja || ''; s.title_ko = s.title_ko || ''; s.title_tw = s.title_tw || ''
+              s.desc_en = s.desc_en || ''; s.desc_ja = s.desc_ja || ''; s.desc_ko = s.desc_ko || ''; s.desc_tw = s.desc_tw || ''
+              s.tag_en = s.tag_en || ''; s.tag_ja = s.tag_ja || ''; s.tag_ko = s.tag_ko || ''; s.tag_tw = s.tag_tw || ''
+            }
+            return s
+          })
+          localStorage.setItem('heroSlides', JSON.stringify(slides))
+        }
         if (data.clicks) localStorage.setItem('clicks', JSON.stringify(data.clicks))
         if (data.visits) localStorage.setItem('visits', JSON.stringify(data.visits))
       }

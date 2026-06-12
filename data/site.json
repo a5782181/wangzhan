@@ -832,7 +832,7 @@
       "tag": "精选",
       "c1": "#1a1a2e",
       "c2": "#16213e",
-      "linkId": "",
+      "linkId": "dongbei-guobaorou",
       "title_en": "New header",
       "title_ja": "新しいヘッダー",
       "title_ko": "새 헤더",
@@ -847,7 +847,18 @@
       "tag_tw": "精選"
     }
   ],
-  "clicks": [],
+  "clicks": [
+    {
+      "time": "2026-06-12T12:35:13.374Z",
+      "plan": "视频教程",
+      "price": "$39.99",
+      "recipe": "回锅肉",
+      "visitor": "v_1781267448485_srj3s1",
+      "ip": "unknown",
+      "country": "unknown",
+      "city": "unknown"
+    }
+  ],
   "visits": [
     {
       "time": "2026-06-12T12:30:48.698Z",
@@ -860,5 +871,5 @@
       "page": "/wangzhan/index.html"
     }
   ],
-  "lastSync": "2026-06-12T12:34:49.396Z"
+  "lastSync": "2026-06-12T12:38:00.143Z"
 }

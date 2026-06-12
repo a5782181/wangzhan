@@ -876,8 +876,21 @@
       "price": "1.00",
       "recipe": "????",
       "page": "/"
+    },
+    {
+      "time": "2026-06-12T17:31:15.453Z",
+      "type": "click",
+      "visitor": "v_test",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "plan": "test",
+      "price": "1",
+      "recipe": "test",
+      "page": "/"
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T17:23:27.230Z"
+  "lastSync": "2026-06-12T17:31:15.717Z"
 }

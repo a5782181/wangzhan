@@ -16,9 +16,14 @@ const COUNTRY_NAMES = {
 }
 
 async function readRaw() {
-  const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
-  if (res.ok) return await res.json()
-  return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
+  try {
+    const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`, { signal: AbortSignal.timeout(10000) })
+    if (!res.ok) return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
+    const text = await res.text()
+    return JSON.parse(text)
+  } catch (e) {
+    return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
+  }
 }
 
 async function getSha(token) {

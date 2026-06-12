@@ -1,7 +1,21 @@
 const REPO = 'a5782181/wangzhan'
 const FILE_PATH = 'data/site.json'
 
-async function readRaw(token) {
+const COUNTRY_NAMES = {
+  CN:'中国', US:'United States', GB:'United Kingdom', JP:'日本', KR:'한국',
+  TW:'Taiwan', HK:'Hong Kong', DE:'Germany', FR:'France', CA:'Canada',
+  AU:'Australia', SG:'Singapore', MY:'Malaysia', TH:'Thailand', VN:'Vietnam',
+  IN:'India', PH:'Philippines', ID:'Indonesia', MO:'Macau', RU:'Russia',
+  BR:'Brazil', MX:'Mexico', IT:'Italy', ES:'Spain', NL:'Netherlands',
+  CH:'Switzerland', SE:'Sweden', NO:'Norway', DK:'Denmark', FI:'Finland',
+  NZ:'New Zealand', ZA:'South Africa', AR:'Argentina', IL:'Israel',
+  PT:'Portugal', BE:'Belgium', AT:'Austria', IE:'Ireland', PL:'Poland',
+  CZ:'Czech', GR:'Greece', HU:'Hungary', RO:'Romania', UA:'Ukraine',
+  TR:'Turkey', SA:'Saudi Arabia', AE:'UAE', EG:'Egypt', NG:'Nigeria',
+  KE:'Kenya', PK:'Pakistan', BD:'Bangladesh', LK:'Sri Lanka', MM:'Myanmar'
+}
+
+async function readRaw() {
   const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
   if (res.ok) return await res.json()
   return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
@@ -28,7 +42,7 @@ async function writeWithRetry(token, data, sha, record, maxRetries = 3) {
     })
     if (res.ok) return true
     if (res.status === 409 && attempt < maxRetries - 1) {
-      const fresh = await readRaw(token)
+      const fresh = await readRaw()
       sha = await getSha(token)
       data = fresh
       if (!data.clicks) data.clicks = []
@@ -90,7 +104,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [siteData, sha] = await Promise.all([readRaw(token), getSha(token)])
+    const [siteData, sha] = await Promise.all([readRaw(), getSha(token)])
     if (!siteData.clicks) siteData.clicks = []
     if (!siteData.visits) siteData.visits = []
     if (record.type === 'visit') {

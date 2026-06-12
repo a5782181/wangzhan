@@ -857,16 +857,6 @@
       "ip": "45.67.201.99",
       "country": "未知",
       "city": ""
-    },
-    {
-      "time": "2026-06-12T15:18:58.740Z",
-      "plan": "视频教程",
-      "price": "¥271.53",
-      "recipe": "回锅肉",
-      "visitor": "v_1781277538742",
-      "ip": "206.237.119.235",
-      "country": "Hong Kong",
-      "city": "Hong Kong"
     }
   ],
   "visits": [
@@ -881,5 +871,5 @@
       "page": "/wangzhan/index.html"
     }
   ],
-  "lastSync": "2026-06-12T15:18:59.279Z"
+  "lastSync": "2026-06-12T15:19:32.861Z"
 }

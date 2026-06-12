@@ -267,8 +267,24 @@
         "蒸好后倒掉盘中多余汤汁，淋上蒸鱼豉油",
         "撒上葱花，浇上热油即可"
       ],
-      "paid": false,
-      "createdAt": "2026-06-11T00:00:00Z"
+      "paid": true,
+      "createdAt": "2026-06-11T00:00:00Z",
+      "name_en": "",
+      "name_ja": "",
+      "name_ko": "",
+      "name_tw": "",
+      "desc_en": "",
+      "desc_ja": "",
+      "desc_ko": "",
+      "desc_tw": "",
+      "ingredients_en": [],
+      "ingredients_ja": [],
+      "ingredients_ko": [],
+      "ingredients_tw": [],
+      "steps_en": [],
+      "steps_ja": [],
+      "steps_ko": [],
+      "steps_tw": []
     },
     {
       "id": "shandong-jiuzhuan",
@@ -860,5 +876,5 @@
       "page": "/wangzhan/index.html"
     }
   ],
-  "lastSync": "2026-06-12T14:41:30.492Z"
+  "lastSync": "2026-06-12T14:42:07.811Z"
 }

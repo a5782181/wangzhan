@@ -17,8 +17,15 @@ export default async function handler(req, res) {
 
   try {
     let existing = { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
-    const rawRes = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
-    if (rawRes.ok) existing = await rawRes.json()
+    let sha = null
+    const ghRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    })
+    if (ghRes.ok) {
+      const json = await ghRes.json()
+      existing = JSON.parse(Buffer.from(json.content, 'base64').toString())
+      sha = json.sha
+    }
 
     const merged = {
       articles: incoming.articles !== undefined ? incoming.articles : existing.articles,
@@ -29,24 +36,18 @@ export default async function handler(req, res) {
       lastSync: new Date().toISOString()
     }
 
-    const shaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-    })
-    let sha = null
-    if (shaRes.ok) sha = (await shaRes.json()).sha
-
     const content = Buffer.from(JSON.stringify(merged, null, 2)).toString('base64')
     const body = { message: '后台管理 - 更新网站数据', content }
     if (sha) body.sha = sha
 
-    const ghRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+    const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
       method: 'PUT',
       headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     })
 
-    if (ghRes.ok) return res.status(200).json({ success: true, message: '已推送到 GitHub' })
-    const err = await ghRes.json()
+    if (putRes.ok) return res.status(200).json({ success: true, message: '已推送到 GitHub' })
+    const err = await putRes.json()
     return res.status(200).json({ success: false, message: err.message || '推送失败' })
   } catch (e) {
     return res.status(200).json({ success: false, message: e.message })

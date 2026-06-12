@@ -13,19 +13,20 @@ export default async function handler(req, res) {
   if (!token) return res.status(200).json({ success: false, message: '未配置GitHub Token' })
 
   try {
-    const ghRes = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}?t=${Date.now()}`)
     let data = { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
-    if (ghRes.ok) data = await ghRes.json()
+    let sha = null
+    const ghRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    })
+    if (ghRes.ok) {
+      const json = await ghRes.json()
+      data = JSON.parse(Buffer.from(json.content, 'base64').toString())
+      sha = json.sha
+    }
 
     data.clicks = []
     data.visits = []
     data.lastSync = new Date().toISOString()
-
-    const shaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-    })
-    let sha = null
-    if (shaRes.ok) sha = (await shaRes.json()).sha
 
     const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')
     const body = { message: '清空点击/访问记录', content }

@@ -15,22 +15,17 @@ const COUNTRY_NAMES = {
   KE:'Kenya', PK:'Pakistan', BD:'Bangladesh', LK:'Sri Lanka', MM:'Myanmar'
 }
 
-async function getFileSha(token) {
+async function readData(token) {
   try {
     const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
       headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
     })
-    if (res.ok) return (await res.json()).sha
+    if (res.ok) {
+      const json = await res.json()
+      return { data: JSON.parse(Buffer.from(json.content, 'base64').toString()), sha: json.sha }
+    }
   } catch (e) {}
-  return null
-}
-
-async function readData(token) {
-  try {
-    const res = await fetch(`https://raw.githubusercontent.com/${REPO}/main/${FILE_PATH}`)
-    if (res.ok) return await res.json()
-  } catch (e) {}
-  return { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }
+  return { data: { articles: [], plans: [], heroSlides: [], clicks: [], visits: [] }, sha: null }
 }
 
 async function writeData(token, data, sha) {
@@ -86,7 +81,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const [siteData, sha] = await Promise.all([readData(token), getFileSha(token)])
+    const { data: siteData, sha } = await readData(token)
     if (!siteData.clicks) siteData.clicks = []
     if (!siteData.visits) siteData.visits = []
     if (record.type === 'visit') {

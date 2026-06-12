@@ -783,6 +783,8 @@ function loadFromGithub() {
         if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
         if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
         if (data.heroSlides) localStorage.setItem('heroSlides', JSON.stringify(data.heroSlides))
+        if (data.clicks) localStorage.setItem('clicks', JSON.stringify(data.clicks))
+        if (data.visits) localStorage.setItem('visits', JSON.stringify(data.visits))
       }
     })
     .catch(function() {})
@@ -986,6 +988,8 @@ async function pushToGithub() {
     articles: getArticles(),
     plans: getPlans(),
     heroSlides: getHeroSlides(),
+    clicks: JSON.parse(localStorage.getItem('clicks') || '[]'),
+    visits: JSON.parse(localStorage.getItem('visits') || '[]'),
     lastSync: new Date().toISOString()
   }
   

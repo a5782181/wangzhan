@@ -825,29 +825,7 @@
     }
   ],
   "heroSlides": [],
-  "clicks": [
-    {
-      "time": "2026-06-12T12:35:13.374Z",
-      "plan": "视频教程",
-      "price": "$39.99",
-      "recipe": "回锅肉",
-      "visitor": "v_1781267448485_srj3s1",
-      "ip": "unknown",
-      "country": "unknown",
-      "city": "unknown"
-    }
-  ],
-  "visits": [
-    {
-      "time": "2026-06-12T12:30:48.698Z",
-      "type": "visit",
-      "visitor": "v_1781267448485_srj3s1",
-      "ip": "unknown",
-      "country": "unknown",
-      "city": "unknown",
-      "cc": "",
-      "page": "/wangzhan/index.html"
-    }
-  ],
-  "lastSync": "2026-06-12T12:44:21.333Z"
+  "clicks": [],
+  "visits": [],
+  "lastSync": "2026-06-12T12:46:17.123Z"
 }

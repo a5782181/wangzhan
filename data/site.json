@@ -858,8 +858,19 @@
       "country": "Hong Kong",
       "city": "",
       "countryCode": "HK"
+    },
+    {
+      "time": "2026-06-12T16:16:41.661Z",
+      "plan": "赞助支持",
+      "price": "¥67.83",
+      "recipe": "锅包肉",
+      "visitor": "v_1781281001665",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK"
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T16:16:23.490Z"
+  "lastSync": "2026-06-12T16:16:41.912Z"
 }

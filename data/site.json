@@ -245,6 +245,7 @@
       "diff": "中",
       "time": "50分钟",
       "desc": "湘菜经典名菜，鲜辣开胃。",
+      "img": "../images/recipes/duojiaoyutou.jpg",
       "ingredients": [
         "胖头鱼头 1个",
         "剁椒 200g",
@@ -266,101 +267,24 @@
         "蒸好后倒掉盘中多余汤汁，淋上蒸鱼豉油",
         "撒上葱花，浇上热油即可"
       ],
-      "img": "../images/recipes/duojiaoyutou.jpg",
       "paid": true,
       "createdAt": "2026-06-11T00:00:00Z",
-      "name_en": "Steamed Fish Head with Diced Hot Red Peppers",
-      "name_ja": "みじん切りピーマンの魚の頭",
-      "name_ko": "다진 피망 생선 머리",
-      "name_tw": "剁椒魚頭",
-      "desc_en": "Hunan cuisine classic famous dishes, fresh and spicy appetizer.",
-      "desc_ja": "湖南料理の定番名物料理、新鮮でスパイシーな前菜。",
-      "desc_ko": "후난 요리 고전적인 유명한 요리, 신선하고 매콤한 애피타이저.",
-      "desc_tw": "湘菜經典名菜，鮮辣開胃。",
-      "ingredients_en": [
-        "Fat Head 1 Fish Head",
-        "Chopped pepper 200g",
-        "1 tbsp minced ginger",
-        "1 tbsp minced garlic",
-        "Appropriate amount of scallion flower",
-        "2 tbsp steamed fish sauce",
-        "2 tablespoons cooking wine",
-        "A little white pepper",
-        "3 tablespoons cooking oil"
-      ],
-      "ingredients_ja": [
-        "ファットヘッド1フィッシュヘッド",
-        "みじん切りコショウ200 g",
-        "生姜みじん切り大さじ1杯",
-        "にんにくのみじん切り大さじ1杯",
-        "適量のねぎの花",
-        "蒸しフィッシュソース大さじ2",
-        "調理用ワイン大さじ2",
-        "ちょっとした白コショウ",
-        "食用油大さじ3"
-      ],
-      "ingredients_ko": [
-        "뚱뚱한 머리 1 물고기 머리",
-        "다진 후추 200g",
-        "다진 생강 1큰술",
-        "다진 마늘 1큰술",
-        "스캘리언 플라워 적당량",
-        "생선찜 소스 2큰술",
-        "쿠킹 와인 2큰술",
-        "약간 흰 후추",
-        "식용유 3큰술"
-      ],
-      "ingredients_tw": [
-        "胖頭魚頭1個",
-        "剁椒200g",
-        "薑末1大匙",
-        "蒜末1湯匙",
-        "蔥花適量",
-        "蒸魚豉油2大匙",
-        "料酒2大匙",
-        "白胡椒粉少許",
-        "食用油3大匙"
-      ],
-      "steps_en": [
-        "Remove the gills from the fish head, cleave from the middle, but do not cut off",
-        "Wipe the inside and outside of the fish head with seasoning wine and white pepper, marinate for 15 minutes",
-        "Squeeze the chopped pepper to remove excess water, and mix well with the ginger powder and garlic powder.",
-        "Spread ginger slices, scallion segments on the bottom of the tray and place the fish heads",
-        "Spread the chopped pepper evenly over the fish head",
-        "Steam for 15 minutes after boiling",
-        "After steaming, pour out the excess soup from the plate and pour in the steamed fish sauce.",
-        "Sprinkle with scallions and add hot oil"
-      ],
-      "steps_ja": [
-        "魚の頭から鳃を取り除き、真ん中から切断しますが、切断しないでください",
-        "魚の頭の内側と外側を調味料ワインと白コショウで拭き、15分間マリネします",
-        "みじん切りにしたコショウを絞って余分な水分を取り除き、ショウガパウダーとニンニクパウダーをよく混ぜ合わせます。",
-        "生姜のスライス、ねぎの房をトレイの底に広げ、魚の頭を置きます",
-        "唐辛子のみじん切りを魚の頭の上に均等に広げます",
-        "沸騰後15分間蒸す",
-        "蒸した後、皿から余分なスープを注ぎ、蒸した魚のソースを注ぎます。",
-        "ねぎを振りかけ、熱い油を加えます"
-      ],
-      "steps_ko": [
-        "생선 머리에서 아가미를 제거하고 중간에서 갈라지지만 잘라내지 마십시오.",
-        "양념 와인과 후추로 생선 머리 안쪽과 바깥쪽을 닦고 15분 동안 양념합니다.",
-        "다진 후추를 짜서 과량의 물을 제거하고 생강가루, 마늘가루와 잘 섞어줍니다.",
-        "트레이 바닥에 생강 슬라이스, 스캘리온 조각을 펴고 생선 머리를 놓습니다.",
-        "다진 후추를 생선 머리 위에 고르게 펴 바릅니다.",
-        "끓인 후 15분간 증기",
-        "김을 찐 후 접시에서 여분의 국물을 붓고 찐 생선 소스를 부어줍니다.",
-        "스캘리온을 뿌리고 뜨거운 오일을 첨가합니다"
-      ],
-      "steps_tw": [
-        "魚頭去鰓洗淨，從中間劈開但不要切斷",
-        "用料酒、白胡椒粉抹勻魚頭內外，醃製15分鐘",
-        "剁椒擠去多餘水分，與薑末、蒜末拌勻",
-        "盤底鋪薑片、蔥段，放上魚頭",
-        "將剁椒均勻鋪在魚頭上",
-        "水開後上鍋蒸15分鐘",
-        "蒸好後倒掉盤中多餘湯汁，淋上蒸魚豉油",
-        "撒上蔥花，淋上熱油即可"
-      ]
+      "name_en": "",
+      "name_ja": "",
+      "name_ko": "",
+      "name_tw": "",
+      "desc_en": "",
+      "desc_ja": "",
+      "desc_ko": "",
+      "desc_tw": "",
+      "ingredients_en": [],
+      "ingredients_ja": [],
+      "ingredients_ko": [],
+      "ingredients_tw": [],
+      "steps_en": [],
+      "steps_ja": [],
+      "steps_ko": [],
+      "steps_tw": []
     },
     {
       "id": "shandong-jiuzhuan",
@@ -999,5 +923,5 @@
     }
   ],
   "visits": [],
-  "lastSync": "2026-06-12T17:09:54.324Z"
+  "lastSync": "2026-06-12T17:10:04.691Z"
 }

@@ -793,7 +793,7 @@
       "key": "视频教程",
       "name": "🎬 视频教程",
       "price": "39.99",
-      "enabled": true
+      "enabled": false
     },
     {
       "key": "赞助支持",
@@ -809,5 +809,5 @@
     }
   ],
   "heroSlides": [],
-  "lastSync": "2026-06-12T11:48:43.714Z"
+  "lastSync": "2026-06-12T11:48:45.893Z"
 }

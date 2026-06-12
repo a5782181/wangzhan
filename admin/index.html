@@ -448,12 +448,14 @@ function clearData() {
     localStorage.removeItem('clicks')
     localStorage.removeItem('visits')
     localStorage.removeItem('unlocked')
-    loadStats()
+    localStorage.setItem('_clearTimestamp', Date.now().toString())
     _clearCooldown = Date.now()
+    loadStats()
     fetch(API_BASE + '/admin/clear', { method: 'POST' })
       .then(function(r){return r.json()})
       .then(function(resp){
         if(!resp.success)console.warn('清空GitHub失败:',resp.message)
+        else refreshStatsOnly()
       })
       .catch(function(){})
   }
@@ -887,34 +889,43 @@ function doLogin() {
   })
 }
 
-function loadFromGithub() {
+function refreshStatsOnly() {
+  if (Date.now() - _clearCooldown < 15000) return
   fetch(API_BASE + '/admin/read')
     .then(function(r) { return r.json() })
     .then(function(resp) {
       var data = resp.data
-      if (data) {
-        if (data.articles) localStorage.setItem('articles', JSON.stringify(data.articles))
-        if (data.plans) localStorage.setItem('plans', JSON.stringify(data.plans))
-        if (data.heroSlides) {
-          var slides = data.heroSlides.map(function(s) {
-            if (!s.title_en && !s.title_ja) {
-              s.title_en = s.title_en || ''; s.title_ja = s.title_ja || ''; s.title_ko = s.title_ko || ''; s.title_tw = s.title_tw || ''
-              s.desc_en = s.desc_en || ''; s.desc_ja = s.desc_ja || ''; s.desc_ko = s.desc_ko || ''; s.desc_tw = s.desc_tw || ''
-              s.tag_en = s.tag_en || ''; s.tag_ja = s.tag_ja || ''; s.tag_ko = s.tag_ko || ''; s.tag_tw = s.tag_tw || ''
-            }
-            return s
-          })
-          localStorage.setItem('heroSlides', JSON.stringify(slides))
-        }
-        if (data.clicks) localStorage.setItem('clicks', JSON.stringify(data.clicks))
-        if (data.visits) localStorage.setItem('visits', JSON.stringify(data.visits))
+      if (!data) return
+
+      var clearTs = parseInt(localStorage.getItem('_clearTimestamp') || '0')
+      var dataTime = data.lastSync ? new Date(data.lastSync).getTime() : 0
+      if (dataTime < clearTs) return
+
+      if (data.clicks) {
+        var existing = JSON.parse(localStorage.getItem('clicks') || '[]')
+        var existingKeys = new Set(existing.map(function(c){return c.time + '|' + c.visitor + '|' + c.plan}))
+        data.clicks.forEach(function(c){
+          var key = c.time + '|' + c.visitor + '|' + c.plan
+          if (!existingKeys.has(key)) { existing.push(c); existingKeys.add(key) }
+        })
+        localStorage.setItem('clicks', JSON.stringify(existing))
       }
+      if (data.visits) {
+        var existingV = JSON.parse(localStorage.getItem('visits') || '[]')
+        var visitKeys = new Set(existingV.map(function(v){return v.time + '|' + v.visitor}))
+        data.visits.forEach(function(v){
+          var key = v.time + '|' + v.visitor
+          if (!visitKeys.has(key)) { existingV.push(v); visitKeys.add(key) }
+        })
+        localStorage.setItem('visits', JSON.stringify(existingV))
+      }
+      try { loadStats() } catch(e) {}
     })
     .catch(function() {})
 }
 
 function checkLogin() {
-  loadFromGithub()
+  refreshStatsOnly()
   var session = JSON.parse(localStorage.getItem('adminSession') || 'null')
   if (session && Date.now() < session.expire) {
     showAdmin()
@@ -1040,10 +1051,8 @@ async function syncToGithub() {
 
 checkLogin()
 setInterval(function(){
-  if (Date.now() - _clearCooldown < 15000) return
-  loadFromGithub()
-  setTimeout(function(){try{loadStats()}catch(e){}},1500)
-},30000)
+  refreshStatsOnly()
+},10000)
 </script>
 </body>
 </html>

@@ -702,7 +702,7 @@
     {
       "key": "完整菜谱PDF",
       "name": "📖 完整菜谱",
-      "price": "19.99",
+      "price": "2.99",
       "enabled": true,
       "name_en": "📖 Complete Recipes",
       "name_ja": "レシピ📖 を完成させる",
@@ -712,7 +712,7 @@
     {
       "key": "视频教程",
       "name": "🎬 视频教程",
-      "price": "39.99",
+      "price": "19.99",
       "enabled": true,
       "name_en": "Video Tutorials",
       "name_ja": "🎬 ビデオチュートリアル",
@@ -722,7 +722,7 @@
     {
       "key": "赞助支持",
       "name": "☕ 赞助支持",
-      "price": "9.99",
+      "price": "2",
       "enabled": true,
       "name_en": "☕ Sponsorship Support",
       "name_ja": "☕ スポンサーシップサポート",
@@ -754,5 +754,5 @@
       "page": "/index.html"
     }
   ],
-  "lastSync": "2026-06-15T12:25:33.792Z"
+  "lastSync": "2026-06-15T12:48:42.632Z"
 }

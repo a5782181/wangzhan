@@ -33,9 +33,9 @@ async function loadCloudData(){
     const res=await fetch('https://raw.githubusercontent.com/a5782181/wangzhan/main/data/site.json?t='+Date.now())
     if(res.ok){
       _cloudData=await res.json()
-      localStorage.setItem('articles',JSON.stringify(_cloudData.articles||[]))
-      localStorage.setItem('plans',JSON.stringify(_cloudData.plans||[]))
-      localStorage.setItem('heroSlides',JSON.stringify(_cloudData.heroSlides||[]))
+      if(_cloudData.articles&&_cloudData.articles.length)localStorage.setItem('articles',JSON.stringify(_cloudData.articles))
+      if(_cloudData.plans&&_cloudData.plans.length)localStorage.setItem('plans',JSON.stringify(_cloudData.plans))
+      if(_cloudData.heroSlides&&_cloudData.heroSlides.length)localStorage.setItem('heroSlides',JSON.stringify(_cloudData.heroSlides))
       return _cloudData
     }
   }catch(e){}
@@ -307,7 +307,7 @@ async function confirmPay(plan,price,name,articleId){
   const clicks=JSON.parse(localStorage.getItem('clicks')||'[]')
   clicks.push(click)
   localStorage.setItem('clicks',JSON.stringify(clicks))
-  try{await fetch(`${API}/track`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan,price,recipeName:name,page:location.pathname,visitor})})}catch(e){}
+  try{await fetch(`${API}/track`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan,price,recipeName:name,page:location.pathname,visitor,time:click.time})})}catch(e){}
   if(articleId)unlockArticle(articleId)
   const thankModal=document.createElement('div')
   thankModal.className='modal on'
@@ -350,10 +350,11 @@ async function translateDetailContent(id,a){
 async function recordVisit(){
   const visitor=localStorage.getItem('vid')||('v_'+Date.now()+'_'+Math.random().toString(36).slice(2,8))
   localStorage.setItem('vid',visitor)
+  const vt=new Date().toISOString()
   const visits=JSON.parse(localStorage.getItem('visits')||'[]')
-  visits.push({time:new Date().toISOString(),type:'visit',visitor,page:location.pathname})
+  visits.push({time:vt,type:'visit',visitor,page:location.pathname})
   localStorage.setItem('visits',JSON.stringify(visits))
-  try{await fetch(API+'/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'visit',visitor,page:location.pathname})})}catch(e){}
+  try{await fetch(API+'/track',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'visit',visitor,page:location.pathname,time:vt})})}catch(e){}
 }
 
 window.onload=async()=>{

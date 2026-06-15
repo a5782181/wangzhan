@@ -49,9 +49,9 @@ async function writeWithRetry(token, data, sha, record, maxRetries = 3) {
       if (!data.clicks) data.clicks = []
       if (!data.visits) data.visits = []
       if (record.type === 'visit') {
-        const today = new Date().toISOString().slice(0, 10)
-        const alreadyToday = data.visits.some(v => v.visitor === record.visitor && v.ip === record.ip && v.time && v.time.slice(0, 10) === today)
-        if (!alreadyToday) data.visits.push(record)
+        const oneYearAgo = new Date(Date.now() - 365*24*60*60*1000).toISOString()
+        const alreadySeen = data.visits.some(v => v.ip === record.ip && v.time && v.time > oneYearAgo)
+        if (!alreadySeen) data.visits.push(record)
       } else {
         data.clicks.push(record)
         if (data.clicks.length > 500) data.clicks = data.clicks.slice(-500)
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
   const city = (vercelCity && vercelCity !== 'Unknown' ? vercelCity : body.city) || ''
 
   const record = {
-    time: new Date().toISOString(),
+    time: body.time || new Date().toISOString(),
     type: body.type || 'click',
     visitor: body.visitor || 'v_' + Date.now(),
     ip: ip,
@@ -109,9 +109,9 @@ export default async function handler(req, res) {
     if (!siteData.clicks) siteData.clicks = []
     if (!siteData.visits) siteData.visits = []
     if (record.type === 'visit') {
-      const today = new Date().toISOString().slice(0, 10)
-      const alreadyToday = siteData.visits.some(v => v.visitor === record.visitor && v.ip === record.ip && v.time && v.time.slice(0, 10) === today)
-      if (!alreadyToday) siteData.visits.push(record)
+      const oneYearAgo = new Date(Date.now() - 365*24*60*60*1000).toISOString()
+      const alreadySeen = siteData.visits.some(v => v.ip === record.ip && v.time && v.time > oneYearAgo)
+      if (!alreadySeen) siteData.visits.push(record)
     } else {
       siteData.clicks.push(record)
       if (siteData.clicks.length > 500) siteData.clicks = siteData.clicks.slice(-500)

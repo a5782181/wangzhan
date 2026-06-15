@@ -3,6 +3,17 @@
   "plans": [],
   "heroSlides": [],
   "clicks": [],
-  "visits": [],
-  "lastSync": "2026-06-15T11:41:52.728Z"
+  "visits": [
+    {
+      "time": "2026-06-15T11:44:40.023Z",
+      "type": "visit",
+      "visitor": "v_1781275702223_0s5g24",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "page": "/index.html"
+    }
+  ],
+  "lastSync": "2026-06-15T11:44:40.313Z"
 }

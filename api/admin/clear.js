@@ -17,14 +17,28 @@ export default async function handler(req, res) {
       const metaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
         headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
       })
-      let sha = null
-      if (metaRes.ok) sha = (await metaRes.json()).sha
+      if (!metaRes.ok) return res.status(200).json({ success: false, message: '读取失败' })
+      const meta = await metaRes.json()
+      const sha = meta.sha
 
-      const data = { articles: [], plans: [], heroSlides: [], clicks: [], visits: [], lastSync: new Date().toISOString() }
+      const blobRes = await fetch(meta.git_url, {
+        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+      })
+      if (!blobRes.ok) return res.status(200).json({ success: false, message: '读取失败' })
+      const blob = await blobRes.json()
+      const existing = JSON.parse(Buffer.from(blob.content, 'base64').toString())
+
+      const data = {
+        articles: existing.articles || [],
+        plans: existing.plans || [],
+        heroSlides: existing.heroSlides || [],
+        clicks: [],
+        visits: [],
+        lastSync: new Date().toISOString()
+      }
 
       const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64')
-      const body = { message: '清空点击/访问记录', content }
-      if (sha) body.sha = sha
+      const body = { message: '清空点击/访问记录', content, sha }
 
       const writeRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
         method: 'PUT',

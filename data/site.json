@@ -698,7 +698,32 @@
       "createdAt": "2026-06-11T00:00:00Z"
     }
   ],
-  "plans": [],
+  "plans": [
+    {
+      "key": "完整菜谱PDF",
+      "name": "📖 完整菜谱PDF",
+      "price": "19.99",
+      "enabled": true
+    },
+    {
+      "key": "视频教程",
+      "name": "🎬 视频教程",
+      "price": "39.99",
+      "enabled": true
+    },
+    {
+      "key": "赞助支持",
+      "name": "☕ 赞助支持",
+      "price": "9.99",
+      "enabled": true
+    },
+    {
+      "key": "一对一带做",
+      "name": "👨‍🍳 一对一带做",
+      "price": "199",
+      "enabled": true
+    }
+  ],
   "heroSlides": [],
   "clicks": [],
   "visits": [
@@ -713,5 +738,5 @@
       "page": "/index.html"
     }
   ],
-  "lastSync": "2026-06-15T12:07:32.127Z"
+  "lastSync": "2026-06-15T12:11:34.709Z"
 }

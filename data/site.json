@@ -876,6 +876,19 @@
       "price": "¥271.53",
       "recipe": "锅包肉",
       "page": "/"
+    },
+    {
+      "time": "2026-06-15T11:41:16.684Z",
+      "type": "click",
+      "visitor": "v_1781275702223_0s5g24",
+      "ip": "206.237.119.235",
+      "country": "Hong Kong",
+      "city": "",
+      "countryCode": "HK",
+      "plan": "视频教程",
+      "price": "$39.99",
+      "recipe": "回锅肉",
+      "page": "/index.html"
     }
   ],
   "visits": [
@@ -920,5 +933,5 @@
       "page": "/index.html"
     }
   ],
-  "lastSync": "2026-06-15T06:51:09.429Z"
+  "lastSync": "2026-06-15T11:41:17.080Z"
 }

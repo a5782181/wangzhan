@@ -131,7 +131,6 @@
       "diff": "低",
       "time": "30分钟",
       "desc": "四川家常菜第一名，肥而不腻，配饭神器。",
-      "img": "../images/recipes/huiguorou.jpg",
       "ingredients": [
         "五花肉 300g",
         "蒜苗 3根",
@@ -151,24 +150,93 @@
         "加入豆豉、蒜白翻炒",
         "加入生抽、白糖调味，最后下蒜叶翻炒几下即可"
       ],
+      "img": "../images/recipes/huiguorou.jpg",
       "paid": false,
       "createdAt": "2026-06-11T00:00:00Z",
-      "name_en": "",
-      "name_ja": "",
-      "name_ko": "",
-      "name_tw": "",
-      "desc_en": "",
-      "desc_ja": "",
-      "desc_ko": "",
-      "desc_tw": "",
-      "ingredients_en": [],
-      "ingredients_ja": [],
-      "ingredients_ko": [],
-      "ingredients_tw": [],
-      "steps_en": [],
-      "steps_ja": [],
-      "steps_ko": [],
-      "steps_tw": []
+      "name_en": "Twice cooked pork",
+      "name_ja": "回鍋肉",
+      "name_ko": "냄비에 고기를 돌려주었습니다.",
+      "name_tw": "回鍋肉",
+      "desc_en": "Sichuan home-cooked first place, fat and not tired, with rice artifacts.",
+      "desc_ja": "四川の自家製の最初の場所、太っていて疲れていない、米のアーティファクト。",
+      "desc_ko": "쌀 유물과 함께 뚱뚱하고 피곤하지 않은 쓰촨성 가정식 1등.",
+      "desc_tw": "四川家常菜第一名，肥而不膩，配飯神器。",
+      "ingredients_en": [
+        "300g pork belly",
+        "3 garlic seedlings",
+        "1 scoop of Bean Sauce",
+        "1 tsp fermented bean curd",
+        "3 slices of ginger",
+        "1 tablespoon cooking wine",
+        "1 tsp sugar",
+        "Soy sauce 1 tablespoon"
+      ],
+      "ingredients_ja": [
+        "豚バラ肉300 g",
+        "ニンニクの苗3本",
+        "ビーンソース1スクープ",
+        "豆腐小さじ1",
+        "生姜3枚",
+        "調理用ワイン大さじ1杯",
+        "砂糖小さじ1",
+        "醤油大さじ1"
+      ],
+      "ingredients_ko": [
+        "삼겹살 300g",
+        "마늘 묘목 3개",
+        "콩 소스 1스쿱",
+        "발효콩 커드 1작은술",
+        "생강 3조각",
+        "쿠킹 와인 1큰술",
+        "설탕 1작은술",
+        "간장 1큰술"
+      ],
+      "ingredients_tw": [
+        "五花肉300g",
+        "蒜苗3根",
+        "郫縣豆瓣醬1大匙",
+        "豆豉1小匙",
+        "薑片3片",
+        "料酒1大匙",
+        "白糖1小匙",
+        "生抽1大匙"
+      ],
+      "steps_en": [
+        "Stir-fry pork in a cold underwater pan with ginger slices and cooking wine until cooked to an octave",
+        "Take out to cool and cut into thin slices",
+        "The garlic seedlings are cut into oblique segments, and the garlic whites and garlic leaves are separated.",
+        "The pan is cooked hot without oil, and the lower meat slices are stir-fried until the oil is rolled up into a lamp nest shape.",
+        "Push the meat aside and stir-fry the red oil in the bean paste",
+        "Add soy sauce, stir-fry in white garlic",
+        "Add the raw soy sauce, sugar seasoning, and finally stir-fry the garlic leaves a few times."
+      ],
+      "steps_ja": [
+        "冷たい水中フライパンで豚肉を炒め、ジンジャースライスと調理用ワインで1オクターブになるまで炒めます",
+        "取り出して冷まし、薄切りにします",
+        "ニンニクの苗木を斜めに切断し、ニンニクの白とニンニクの葉を分離します。",
+        "鍋を油なしで熱し、下の肉のスライスを油がランプの巣の形に巻かれるまで炒めます。",
+        "肉を脇に押し出し、豆のペーストに赤い油を炒めます",
+        "しょうゆを加え、白にんにくで炒める",
+        "生しょうゆ、砂糖の調味料を加え、ニンニクの葉を数回炒めます。"
+      ],
+      "steps_ko": [
+        "차가운 수중 팬에 돼지고기를 볶고 생강 슬라이스와 옥타브로 익을 때까지 와인을 조리합니다.",
+        "테이크아웃하여 식히고 얇게 자릅니다.",
+        "마늘 묘목은 사선으로 자르고 마늘 흰자와 마늘 잎은 분리합니다.",
+        "팬은 기름 없이 뜨겁게 조리하고, 아래쪽 고기 조각은 기름이 램프 둥지 모양으로 말려 올라갈 때까지 볶습니다.",
+        "고기를 옆으로 밀어 넣고 콩 페이스트에 붉은 기름을 볶습니다.",
+        "간장 넣고 백마늘 넣고 볶기",
+        "생간장, 설탕 양념을 넣고 마지막으로 마늘 잎을 몇 번 볶아줍니다."
+      ],
+      "steps_tw": [
+        "五花肉冷水下鍋，加薑片、料酒煮至八分熟",
+        "撈出放涼，切成薄片",
+        "蒜苗切成斜段，蒜白和蒜葉分開",
+        "鍋燒熱不放油，下肉片煸炒至出油捲起呈燈盞窩狀",
+        "把肉推到一邊，下豆瓣醬炒出紅油",
+        "加入豆豉、蒜白翻炒",
+        "加入生抽、白糖調味，最後下蒜葉翻炒幾下即可"
+      ]
     },
     {
       "id": "hunan-duojiaoyutou",
@@ -780,5 +848,5 @@
       "page": "/"
     }
   ],
-  "lastSync": "2026-06-15T12:59:29.009Z"
+  "lastSync": "2026-06-15T13:00:43.955Z"
 }

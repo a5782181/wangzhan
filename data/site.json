@@ -29,8 +29,24 @@
         "加入白糖、白醋、番茄酱炒匀",
         "下炸好的肉片快速翻炒均匀即可"
       ],
-      "paid": false,
-      "createdAt": "2026-06-11T00:00:00Z"
+      "paid": true,
+      "createdAt": "2026-06-11T00:00:00Z",
+      "name_en": "",
+      "name_ja": "",
+      "name_ko": "",
+      "name_tw": "",
+      "desc_en": "",
+      "desc_ja": "",
+      "desc_ko": "",
+      "desc_tw": "",
+      "ingredients_en": [],
+      "ingredients_ja": [],
+      "ingredients_ko": [],
+      "ingredients_tw": [],
+      "steps_en": [],
+      "steps_ja": [],
+      "steps_ko": [],
+      "steps_tw": []
     },
     {
       "id": "sichuan-huiguorou",
@@ -621,5 +637,5 @@
       "page": "/index.html"
     }
   ],
-  "lastSync": "2026-06-15T11:53:05.242Z"
+  "lastSync": "2026-06-15T11:53:08.860Z"
 }

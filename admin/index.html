@@ -1024,25 +1024,34 @@ function saveTransKeys() {
   const secretId = document.getElementById('tencentSecretId').value.trim()
   const secretKey = document.getElementById('tencentSecretKey').value.trim()
   const statusEl = document.getElementById('transStatus')
-  
+
   if (!secretId && !secretKey) {
-    localStorage.removeItem('transKeys')
     statusEl.style.display = 'block'
-    statusEl.style.color = '#faad14'
-    statusEl.textContent = '已切换为免费翻译（MyMemory）'
-    loadTransStatus()
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = 'SecretId 和 SecretKey 不能为空，请输入内容后保存'
+    document.getElementById('tencentSecretId').focus()
     setTimeout(() => statusEl.style.display = 'none', 3000)
     return
   }
-  
+
   if (!secretId || !secretKey) {
     statusEl.style.display = 'block'
     statusEl.style.color = '#f5222d'
-    statusEl.textContent = '请同时填写 SecretId 和 SecretKey'
+    statusEl.textContent = '请同时填写 SecretId 和 SecretKey，两项缺一不可'
+    if (!secretId) document.getElementById('tencentSecretId').focus()
+    else document.getElementById('tencentSecretKey').focus()
     setTimeout(() => statusEl.style.display = 'none', 3000)
     return
   }
-  
+
+  if (secretId.length < 10 || secretKey.length < 10) {
+    statusEl.style.display = 'block'
+    statusEl.style.color = '#f5222d'
+    statusEl.textContent = '输入内容似乎不完整，请检查后重新输入'
+    setTimeout(() => statusEl.style.display = 'none', 3000)
+    return
+  }
+
   localStorage.setItem('transKeys', JSON.stringify({ secretId, secretKey }))
   statusEl.style.display = 'block'
   statusEl.style.color = '#52c41a'

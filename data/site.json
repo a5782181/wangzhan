@@ -7,7 +7,6 @@
       "diff": "中",
       "time": "40分钟",
       "desc": "东北硬菜代表，外酥里嫩，酸甜适口。",
-      "img": "../images/recipes/guobaorou.jpg",
       "ingredients": [
         "猪里脊肉 300g",
         "土豆淀粉 150g",
@@ -29,6 +28,7 @@
         "加入白糖、白醋、番茄酱炒匀",
         "下炸好的肉片快速翻炒均匀即可"
       ],
+      "img": "../images/recipes/guobaorou.jpg",
       "paid": true,
       "createdAt": "2026-06-11T00:00:00Z",
       "name_en": "Breaded Meat in a Pot",
@@ -713,5 +713,5 @@
       "page": "/index.html"
     }
   ],
-  "lastSync": "2026-06-15T11:55:00.692Z"
+  "lastSync": "2026-06-15T11:55:09.288Z"
 }

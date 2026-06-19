@@ -131,6 +131,7 @@
       "diff": "低",
       "time": "30分钟",
       "desc": "四川家常菜第一名，肥而不腻，配饭神器。",
+      "img": "../images/recipes/huiguorou.jpg",
       "ingredients": [
         "五花肉 300g",
         "蒜苗 3根",
@@ -150,7 +151,6 @@
         "加入豆豉、蒜白翻炒",
         "加入生抽、白糖调味，最后下蒜叶翻炒几下即可"
       ],
-      "img": "../images/recipes/huiguorou.jpg",
       "paid": true,
       "createdAt": "2026-06-11T00:00:00Z",
       "name_en": "Twice cooked pork",
@@ -878,5 +878,5 @@
       "page": "/"
     }
   ],
-  "lastSync": "2026-06-19T14:09:35.472Z"
+  "lastSync": "2026-06-19T14:09:46.317Z"
 }
